@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: edd9021b00fac9040964d6492b096c5d
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Shop.unity
+    guid: 45a11242473152c47b91739f05ea2640
+  - enabled: 1
+    path: Assets/Scenes/Boss Fight.unity
+    guid: 848849d42a32cf944a3a495639e2181d
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: cb844255eb05e4244a581e44611dffea
+  - enabled: 1
+    path: Assets/Scenes/Cutscene.unity
+    guid: 56456a0148bf84046adfce64fa2a48f2
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_UseUCBPForAssetBundles: 0
