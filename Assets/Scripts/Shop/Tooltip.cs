@@ -24,7 +24,7 @@ public class Tooltip : MonoBehaviour
         if (hover != null)
         {
             tooltip.SetActive(true);
-            Item hoverItem = shopManager.inventory[hover.transform.GetSiblingIndex()];
+            Item hoverItem = InventoryManager.Instance.inventory[hover.transform.GetSiblingIndex()];
 
             ttHead.text = hoverItem.itemName;
             ttBody.text = hoverItem.description;

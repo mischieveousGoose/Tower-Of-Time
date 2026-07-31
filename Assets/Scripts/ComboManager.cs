@@ -9,15 +9,15 @@ public class ComboManager : MonoBehaviour
     float currentMult;
 
     DamagePopupSpawner popupSpawner;
-    PlayerItems items;
+
 
     void Start()
     {
 
-        items = FindFirstObjectByType<PlayerItems>();
+
         popupSpawner = FindFirstObjectByType<DamagePopupSpawner>();
-        comboSustainTime *= 1 + (0.2f * items.CountItem("Freezer"));
-        comboMultIncrease += (0.1f * items.CountItem("Combo Booster"));
+        comboSustainTime = StatsManager.Instance.GetStat(StatType.ComboSustainTime);
+        comboMultIncrease = StatsManager.Instance.GetStat(StatType.ComboMultIncrease);
     }
 
     public void GainPopup(float gain, Vector3 pos)

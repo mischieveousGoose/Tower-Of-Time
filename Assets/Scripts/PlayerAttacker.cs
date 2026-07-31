@@ -44,6 +44,7 @@ public class PlayerAttacker : MonoBehaviour
 
     void Update()
     {
+        if (movement == null) movement = GetComponent<PlayerMovement>();
         if (movement.isGrounded())
         {
             dashesLeft = airDashes;

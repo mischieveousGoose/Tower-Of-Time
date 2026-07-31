@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerItems : MonoBehaviour
 {
-    List<Item> inv;
+    List<Item> inv { get { return InventoryManager.Instance.inventory; } }
     LevelLoader loader;
     void Start()
     {
         loader = FindFirstObjectByType<LevelLoader>();
-        inv = loader.inventory;
+
     }
 
     public int CountItem(string item)

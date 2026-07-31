@@ -14,7 +14,15 @@ public class ShopManager : MonoBehaviour
     float shopTimer;
 
     LevelLoader loader;
-    public List<Item> inventory;
+
+    List<Item> inventory
+    {
+        get
+        {
+            return InventoryManager.Instance.inventory;
+        }
+    }
+
 
     [Header("UI")]
     public List<Image> itemIcons;
@@ -38,7 +46,6 @@ public class ShopManager : MonoBehaviour
         db = GetComponent<ItemDatabase>();
         loader = FindFirstObjectByType<LevelLoader>();
         time = loader.time;
-        inventory = loader.inventory;
 
         if (loader.level + 1 == loader.bossLevel)
         {
@@ -77,7 +84,7 @@ public class ShopManager : MonoBehaviour
     {
         while (stock.Count < 3)
         {
-            stock.Add(new Item());
+            stock.Add(null);
         }
 
         for (int i = 0; i < 3; i++)

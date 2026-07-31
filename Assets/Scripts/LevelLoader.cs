@@ -18,7 +18,6 @@ public class LevelLoader : MonoBehaviour
     public float[] startingTimes;
     bool startedGame;
     [HideInInspector] public float time;
-    public List<Item> inventory;
 
     bool completedTutorial = false;
 
@@ -42,7 +41,6 @@ public class LevelLoader : MonoBehaviour
         settingsManager = FindFirstObjectByType<SettingsManager>();
         if (!startedGame)
         {
-            inventory = new List<Item>();
             time = startingTimes[settingsManager.difficulty];
             startedGame = true;
             level = 1;
@@ -80,7 +78,6 @@ public class LevelLoader : MonoBehaviour
         else if (curScene == "Shop")
         {
             time = FindFirstObjectByType<ShopManager>().time;
-            inventory = FindFirstObjectByType<ShopManager>().inventory;
             level++;
 
             if (level == bossLevel && sceneName == "SampleScene") sceneName = "Boss Fight";
@@ -89,7 +86,6 @@ public class LevelLoader : MonoBehaviour
         {
             startedGame = false;
             time = startingTimes[settingsManager.difficulty];
-            inventory = new List<Item>();
             level = 1;
         }
 
@@ -110,7 +106,6 @@ public class LevelLoader : MonoBehaviour
     {
         startedGame = false;
         time = startingTimes[settingsManager.difficulty];
-        inventory = new List<Item>();
         level = 1;
         SceneManager.LoadScene("SampleScene");
 
@@ -120,7 +115,6 @@ public class LevelLoader : MonoBehaviour
     {
         startedGame = false;
         time = startingTimes[settingsManager.difficulty];
-        inventory = new List<Item>();
         level = 1;
         SceneManager.LoadScene("Tutorial");
     }

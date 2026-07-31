@@ -1683,7 +1683,6 @@ MonoBehaviour:
   - 0.7
   - 0.8
   - 1.2
-  inventory: []
   itemIcons:
   - {fileID: 1510555097}
   - {fileID: 437920094}
@@ -1732,20 +1731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemDatabase
   items:
-  - {fileID: 11400000, guid: ae8f30f0dc65c304581094ce615ddf33, type: 2}
-  - {fileID: 11400000, guid: 4a93945efca1a424586886c6798407bd, type: 2}
-  - {fileID: 11400000, guid: c20c42448b58d214095b0e86afca0aa0, type: 2}
-  - {fileID: 11400000, guid: b4e70d6cf501a54488ae0175e9509c44, type: 2}
-  - {fileID: 11400000, guid: 33cfc10e74af3bf479ea1a50266fba95, type: 2}
-  - {fileID: 11400000, guid: 4dd96c9162a106d4db621ccce6f23bb8, type: 2}
-  - {fileID: 11400000, guid: e35ae1a55866d3a42bd9e83f6f502196, type: 2}
-  - {fileID: 11400000, guid: 7891423ef57a9a64792d0e5a16ad94fb, type: 2}
-  - {fileID: 11400000, guid: e6ccfadd7ee40354483a678379b5e248, type: 2}
-  - {fileID: 11400000, guid: 101543c0885dd2d43a66e0880373434c, type: 2}
-  - {fileID: 11400000, guid: 3ea4446bb406d4e42bb5987a22615dd5, type: 2}
-  - {fileID: 11400000, guid: 47a475e6a7ef0124caf9195a90fc4ac1, type: 2}
-  - {fileID: 11400000, guid: d73a9da2cc1f58f419cb6dea3414c9dd, type: 2}
-  - {fileID: 11400000, guid: 8727e11d92a83b14d912c900297b280e, type: 2}
+  - {fileID: 11400000, guid: 72c6a20c61cbd2b408f54843bafd49f2, type: 2}
 --- !u!1 &837612917
 GameObject:
   m_ObjectHideFlags: 0

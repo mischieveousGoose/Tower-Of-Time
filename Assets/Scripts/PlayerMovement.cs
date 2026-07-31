@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
         attacker = GetComponent<PlayerAttacker>();
 
         extraJumps = inv.CountItem("Jump Boots");
-        moveSpeed *= inv.CalculateSpeedBoost();
+        moveSpeed = StatsManager.Instance.GetStat(StatType.Speed);
         extraJumpsRemaining = extraJumps;
 
         canFlip = inv.CountItem("Mirror") > 0;
