@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public float acceleration;
     public float decceleration;
 
-    PlayerItems inv;
+
 
     SpriteRenderer sr;
 
@@ -44,16 +44,15 @@ public class PlayerMovement : MonoBehaviour
     {
         sfxManager = FindFirstObjectByType<SFXManager>();
 
-        inv = FindFirstObjectByType<PlayerItems>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         attacker = GetComponent<PlayerAttacker>();
 
-        extraJumps = inv.CountItem("Jump Boots");
+        extraJumps = 0;
         moveSpeed = StatsManager.Instance.GetStat(StatType.Speed);
         extraJumpsRemaining = extraJumps;
 
-        canFlip = inv.CountItem("Mirror") > 0;
+        canFlip = false;
 
 
     }
@@ -165,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Finish"))
         {
-            FindFirstObjectByType<LevelLoader>().LoadLevel("Shop");
+            LevelLoader.Instance.ContinueFromLevel();
         }
 
         if (collision.gameObject.CompareTag("Fight"))

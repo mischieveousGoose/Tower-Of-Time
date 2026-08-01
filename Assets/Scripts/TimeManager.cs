@@ -9,7 +9,7 @@ public class TimeManager : MonoBehaviour
     public TMP_Text countdownText;
     public GameObject LoseUI;
     public GameObject pauseMenu;
-    LevelLoader loader;
+    LevelLoader loader => LevelLoader.Instance;
 
     bool inCountdown = false;
     bool hasLost = false;
@@ -29,7 +29,6 @@ public class TimeManager : MonoBehaviour
     void Start()
     {
         sfxManager = FindFirstObjectByType<SFXManager>();
-        loader = FindFirstObjectByType<LevelLoader>();
         StartCoroutine(Countdown());
         timer = FindFirstObjectByType<Timer>();
         dialogueManager = FindFirstObjectByType<DialogueManager>();
@@ -108,7 +107,7 @@ public class TimeManager : MonoBehaviour
     public void Menu()
     {
         sfxManager.PlaySFX(3);
-        loader.LoadLevel("Menu");
+        loader.Menu();
     }
 
     public void Resume()

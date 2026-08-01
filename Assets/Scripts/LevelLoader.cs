@@ -9,9 +9,11 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
 
-    public int level = 1;
-    float levelTimer;
+    public static LevelLoader Instance;
 
+    public event Action OnReset;
+
+    public int level = 1;
     public int bossLevel;
     SettingsManager settingsManager;
 
@@ -21,18 +23,16 @@ public class LevelLoader : MonoBehaviour
 
     bool completedTutorial = false;
 
-    void Awake()
+    private void Awake()
     {
-
-        DontDestroyOnLoad(gameObject);
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("Level Loader");
-        for (int i = 0; i < objs.Length; i++)
+        if (Instance != null && Instance != this)
         {
-            if (i != 0) Destroy(objs[i]);
+            Destroy(gameObject);
+            return;
         }
-        levelTimer = 0;
 
-
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
     }
 
@@ -48,55 +48,10 @@ public class LevelLoader : MonoBehaviour
 
     }
 
-    public void LoadLevel(string newSceneName)
-    {
-        string sceneName = newSceneName;
-        string curScene = SceneManager.GetActiveScene().name;
-
-        if (curScene == "SampleScene" && sceneName == "Shop")
-        {
-            time = FindFirstObjectByType<Timer>().GetTime();
-            PlayerItems items = FindFirstObjectByType<PlayerItems>();
-
-            LevelSpawner levelSpawner = FindFirstObjectByType<LevelSpawner>();
-            if (levelTimer < ((5 + ((level - 1) * levelSpawner.increaseAmount)) * 12))
-            {
-                time += 15 * items.CountItem("Stopwatch");
-            }
-
-            time -= items.CountItem("Credit Card") * 6;
-
-            time *= 1 + (0.1f * items.CountItem("Piggy Bank"));
-        }
-        else if (curScene == "Shop")
-        {
-            time = FindFirstObjectByType<ShopManager>().time;
-            level++;
-
-            if (level == bossLevel && sceneName == "SampleScene") sceneName = "Boss Fight";
-        }
-        if (sceneName == "Menu" || curScene == "Menu")
-        {
-            startedGame = false;
-            time = startingTimes[settingsManager.difficulty];
-            level = 1;
-        }
-
-
-        if (curScene == "Tutorial" && sceneName == "Shop")
-        {
-            completedTutorial = true;
-            Retry();
-
-        }
-        else
-        {
-            SceneManager.LoadScene(sceneName);
-        }
-    }
 
     public void Retry()
     {
+        OnReset?.Invoke();
         startedGame = false;
         time = startingTimes[settingsManager.difficulty];
         level = 1;
@@ -114,7 +69,52 @@ public class LevelLoader : MonoBehaviour
 
     public void Play()
     {
-        LoadLevel(completedTutorial ? "SampleScene" : "Cutscene");
+        if (completedTutorial)
+        {
+            Retry();
+        }
+        else
+        {
+            SceneManager.LoadScene("Cutscene");
+        }
+    }
+
+    public void ContinueFromShop()
+    {
+        time = FindFirstObjectByType<ShopManager>().time;
+        level++;
+
+        if (level == bossLevel)
+        {
+            SceneManager.LoadScene("Boss Fight");
+        }
+        else
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
+    }
+
+    public void ContinueFromLevel()
+    {
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            completedTutorial = true;
+            Retry();
+            return;
+        }
+
+        time = FindFirstObjectByType<Timer>().GetTime();
+        SceneManager.LoadScene("Shop");
+    }
+
+    public void Menu()
+    {
+        OnReset?.Invoke();
+        startedGame = false;
+        time = startingTimes[settingsManager.difficulty];
+        level = 1;
+
+        SceneManager.LoadScene("Menu");
     }
 
 

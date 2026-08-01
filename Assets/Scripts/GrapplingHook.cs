@@ -19,7 +19,7 @@ public class GrapplingHook : MonoBehaviour
 
     void Start()
     {
-        hasHook = FindFirstObjectByType<PlayerItems>().CountItem("Grappling Hook") > 0;
+        hasHook = false;
         rb = GetComponent<Rigidbody2D>();
         lr = GetComponent<LineRenderer>();
         cam = Camera.main;

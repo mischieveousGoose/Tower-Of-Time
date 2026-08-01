@@ -19,6 +19,21 @@ public class InventoryManager : MonoBehaviour
 
     }
 
+    void OnEnable()
+    {
+        LevelLoader.Instance.OnReset += ResetInventory;
+    }
+
+    void OnDisable()
+    {
+        LevelLoader.Instance.OnReset -= ResetInventory;
+    }
+
+    void ResetInventory()
+    {
+        inventory = new List<Item>();
+    }
+
     public List<T> GetInterfaceList<T>()
     {
         List<T> output = new List<T>();

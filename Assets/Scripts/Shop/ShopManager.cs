@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class ShopManager : MonoBehaviour
 
     float shopTimer;
 
-    LevelLoader loader;
+
 
     List<Item> inventory
     {
@@ -36,6 +37,8 @@ public class ShopManager : MonoBehaviour
     public Transform inventoryParent;
     SettingsManager settingsManager;
 
+    LevelLoader loader => LevelLoader.Instance;
+
 
     void Start()
     {
@@ -44,7 +47,6 @@ public class ShopManager : MonoBehaviour
         Time.timeScale = 1;
         shopTimer = 1;
         db = GetComponent<ItemDatabase>();
-        loader = FindFirstObjectByType<LevelLoader>();
         time = loader.time;
 
         if (loader.level + 1 == loader.bossLevel)
@@ -181,7 +183,7 @@ public class ShopManager : MonoBehaviour
 
     public void Continue()
     {
-        loader.LoadLevel("SampleScene");
+        loader.ContinueFromShop();
     }
 
     void Update()

@@ -42,6 +42,13 @@ public class StatsManager : MonoBehaviour
         }
     }
 
+    public void ResetStats()
+    {
+        stats = startStats;
+        tempStats = null;
+        ResetMultipliers();
+    }
+
     public float GetStat(StatType type)
     {
         switch (type)
@@ -111,11 +118,13 @@ public class StatsManager : MonoBehaviour
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        LevelLoader.Instance.OnReset += ResetStats;
     }
 
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        LevelLoader.Instance.OnReset -= ResetStats;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

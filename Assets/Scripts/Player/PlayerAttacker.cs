@@ -12,7 +12,7 @@ public class PlayerAttacker : MonoBehaviour
     int airDashes;
     public float attackCooldown;
 
-    PlayerItems items;
+
 
 
     public GameObject weapon;
@@ -31,15 +31,14 @@ public class PlayerAttacker : MonoBehaviour
     void Start()
     {
         sfxManager = FindFirstObjectByType<SFXManager>();
-        items = FindFirstObjectByType<PlayerItems>();
         wpDamager = weapon.GetComponent<Damager>();
-        wpDamager.damage *= 1 + (items.CountItem("Sharper Blade") * .25f);
+        wpDamager.damage *= (100 + StatsManager.Instance.GetStat(StatType.Damage)) / 100;
 
         movement = GetComponent<PlayerMovement>();
         cam = Camera.main;
         rb = GetComponent<Rigidbody2D>();
 
-        airDashes = 1 + items.CountItem("Steroids");
+        airDashes = 1;
     }
 
     void Update()

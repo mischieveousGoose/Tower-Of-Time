@@ -92,6 +92,8 @@ public class Boss : MonoBehaviour, Attackable
             FindFirstObjectByType<TimeManager>().Win();
         }
 
+
+
         if (!startedFight) return;
         stateTimer -= Time.deltaTime;
         iFrameCounter -= Time.deltaTime;
@@ -131,7 +133,7 @@ public class Boss : MonoBehaviour, Attackable
 
     public void Menu()
     {
-        FindFirstObjectByType<LevelLoader>().LoadLevel("Menu");
+        LevelLoader.Instance.Menu();
     }
 
 

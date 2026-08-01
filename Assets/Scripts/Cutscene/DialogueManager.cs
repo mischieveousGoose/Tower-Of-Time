@@ -78,7 +78,7 @@ public class DialogueManager : MonoBehaviour
     {
         startedDialogue = false;
         if (thisDialogue == 0)
-            FindFirstObjectByType<LevelLoader>().LoadLevel("Tutorial");
+            LevelLoader.Instance.RetryTutorial();
         else
         {
             FindFirstObjectByType<Boss>().StartFight();
