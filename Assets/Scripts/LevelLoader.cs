@@ -48,13 +48,6 @@ public class LevelLoader : MonoBehaviour
 
     }
 
-    void Update()
-    {
-        levelTimer += Time.deltaTime;
-    }
-
-
-
     public void LoadLevel(string newSceneName)
     {
         string sceneName = newSceneName;
