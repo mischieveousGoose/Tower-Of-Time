@@ -9,7 +9,7 @@ public class TimeManager : MonoBehaviour
     public TMP_Text countdownText;
     public GameObject LoseUI;
     public GameObject pauseMenu;
-    LevelLoader loader => LevelLoader.Instance;
+    GameManager gameManager => GameManager.Instance;
 
     bool inCountdown = false;
     bool hasLost = false;
@@ -17,7 +17,7 @@ public class TimeManager : MonoBehaviour
     public GameObject winScreen;
     public TMP_Text finalTime;
 
-    Timer timer;
+    Player player;
 
     bool hasWon;
     DialogueManager dialogueManager;
@@ -30,7 +30,7 @@ public class TimeManager : MonoBehaviour
     {
         sfxManager = FindFirstObjectByType<SFXManager>();
         StartCoroutine(Countdown());
-        timer = FindFirstObjectByType<Timer>();
+        player = FindFirstObjectByType<Player>();
         dialogueManager = FindFirstObjectByType<DialogueManager>();
     }
 
@@ -87,7 +87,7 @@ public class TimeManager : MonoBehaviour
         if (hasWon) return;
         sfxManager.PlaySFX(7);
         hasWon = true;
-        finalTime.text = "Final Time: " + (Mathf.Round(timer.GetTime() * 100) / 100).ToString() + "s";
+        finalTime.text = "Final Time: " + (Mathf.Round(player.GetTime() * 100) / 100).ToString() + "s";
         winScreen.SetActive(true);
 
     }
@@ -95,19 +95,19 @@ public class TimeManager : MonoBehaviour
     public void Retry()
     {
         sfxManager.PlaySFX(3);
-        loader.Retry();
+        gameManager.Retry();
     }
 
     public void RetryTutorial()
     {
         sfxManager.PlaySFX(3);
-        loader.RetryTutorial();
+        gameManager.RetryTutorial();
     }
 
     public void Menu()
     {
         sfxManager.PlaySFX(3);
-        loader.Menu();
+        gameManager.Menu();
     }
 
     public void Resume()

@@ -21,12 +21,12 @@ public class InventoryManager : MonoBehaviour
 
     void OnEnable()
     {
-        LevelLoader.Instance.OnReset += ResetInventory;
+        GameManager.Instance.OnReset += ResetInventory;
     }
 
     void OnDisable()
     {
-        LevelLoader.Instance.OnReset -= ResetInventory;
+        GameManager.Instance.OnReset -= ResetInventory;
     }
 
     void ResetInventory()

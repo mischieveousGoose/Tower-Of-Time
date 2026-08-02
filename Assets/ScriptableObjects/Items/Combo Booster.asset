@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb08cbb727416541beec8d55459e0b9, type: 3}
+  m_Name: Combo Booster
+  m_EditorClassIdentifier: Assembly-CSharp::StatChanger
+  icon: {fileID: -7573354855677281409, guid: 020227956d0ade743826e9f167311608, type: 3}
+  itemName: Combo Booster
+  cost: 15
+  disableSell: 0
+  hasMaxCount: 0
+  maxCount: 0
+  description: +0.1 to multiplier gained by combos.
+  statModifications:
+  - stat: 3
+    mod: 0.1
+    modType: 0

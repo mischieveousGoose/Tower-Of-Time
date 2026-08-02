@@ -6,10 +6,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class LevelLoader : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
 
-    public static LevelLoader Instance;
+    public static GameManager Instance;
 
     public event Action OnReset;
 
@@ -103,7 +103,15 @@ public class LevelLoader : MonoBehaviour
             return;
         }
 
-        time = FindFirstObjectByType<Timer>().GetTime();
+        Player player = FindFirstObjectByType<Player>();
+
+        List<IOnRoundEnd> items = InventoryManager.Instance.GetInterfaceList<IOnRoundEnd>();
+        foreach (IOnRoundEnd item in items)
+        {
+            item.OnRoundEnd(player);
+        }
+
+        time = player.GetTime();
         SceneManager.LoadScene("Shop");
     }
 

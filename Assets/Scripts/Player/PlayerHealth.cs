@@ -4,7 +4,7 @@ public class PlayerHealth : MonoBehaviour, Attackable
 {
     public float iFrames;
     float iFrameCounter;
-    Timer timer;
+    Player player;
 
     DamagePopupSpawner popupSpawner;
 
@@ -14,7 +14,7 @@ public class PlayerHealth : MonoBehaviour, Attackable
     void Start()
     {
         sfxManager = FindFirstObjectByType<SFXManager>();
-        timer = GetComponent<Timer>();
+        player = GetComponent<Player>();
         attacker = GetComponent<PlayerAttacker>();
         popupSpawner = FindFirstObjectByType<DamagePopupSpawner>();
     }
@@ -32,7 +32,7 @@ public class PlayerHealth : MonoBehaviour, Attackable
         iFrameCounter = iFrames;
 
         popupSpawner.SpawnPopup(transform.position + Vector3.up, "-" + damage.ToString(), Color.red);
-        timer.AddTime(-damage);
+        player.AddTime(-damage);
 
     }
 }

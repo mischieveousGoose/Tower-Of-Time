@@ -10,7 +10,7 @@ public class ShopManager : MonoBehaviour
     List<Item> stock = new List<Item>();
     ItemDatabase db;
     public float time;
-    public float[] costMultipliers;
+
 
     float shopTimer;
 
@@ -37,7 +37,7 @@ public class ShopManager : MonoBehaviour
     public Transform inventoryParent;
     SettingsManager settingsManager;
 
-    LevelLoader loader => LevelLoader.Instance;
+    GameManager gameManager => GameManager.Instance;
 
 
     void Start()
@@ -47,15 +47,15 @@ public class ShopManager : MonoBehaviour
         Time.timeScale = 1;
         shopTimer = 1;
         db = GetComponent<ItemDatabase>();
-        time = loader.time;
+        time = gameManager.time;
 
-        if (loader.level + 1 == loader.bossLevel)
+        if (gameManager.level + 1 == gameManager.bossLevel)
         {
             nextLevelText.text = "-> Final Floor";
         }
         else
         {
-            nextLevelText.text = "-> Floor " + (loader.level + 1).ToString() + "/10";
+            nextLevelText.text = "-> Floor " + (gameManager.level + 1).ToString() + "/10";
         }
 
         RefreshStock();
@@ -130,7 +130,7 @@ public class ShopManager : MonoBehaviour
     {
         sfxManager.PlaySFX(2);
         Destroy(inventoryParent.GetChild(i).gameObject);
-        time += GetItemCost(inventory[i], true) / 2;
+        time += inventory[i].cost / 2;
         inventory.RemoveAt(i);
         RenderShop();
 
@@ -143,7 +143,7 @@ public class ShopManager : MonoBehaviour
         {
             itemIcons[i].sprite = stock[i].icon;
             itemNameTexts[i].text = stock[i].itemName;
-            itemCostTexts[i].text = RoundFloat(stock[i].cost * (1 - (GetItemCount("Coupon") * 0.1f))).ToString() + "s";
+            itemCostTexts[i].text = RoundFloat(stock[i].cost).ToString() + "s";
             itemDescTexts[i].text = stock[i].description.ToString();
         }
     }
@@ -153,29 +153,25 @@ public class ShopManager : MonoBehaviour
         return Mathf.Round(val * 100) / 100;
     }
 
-    float GetItemCost(Item item, bool baseC = false)
-    {
-        float baseCost = item.cost * costMultipliers[settingsManager.difficulty];
-        if (baseC) return baseCost;
-        return baseCost * (1 - (GetItemCount("Coupon") * 0.1f));
-    }
+
 
     public void BuyItem(int i)
     {
         if (shopTimer > 0f) return;
         Item buyItem = stock[i];
-        if (time < GetItemCost(buyItem)) return;
+        if (time < buyItem.cost) return;
 
         sfxManager.PlaySFX(2);
-        time -= GetItemCost(buyItem);
+        time -= buyItem.cost;
 
-        while (buyItem.itemName == "Mystery Box") buyItem = PullValidItem();
         inventory.Add(buyItem);
 
+        if (buyItem is IOnBuy onBuy)
+        {
+            onBuy.OnBuy(this);
+        }
+
         Instantiate(inventoryPrefab, inventoryParent).GetComponent<Image>().sprite = buyItem.icon;
-
-        if (buyItem.itemName == "Credit Card") time += 40;
-
         stock[i] = PullValidItem();
 
         RenderShop();
@@ -183,7 +179,7 @@ public class ShopManager : MonoBehaviour
 
     public void Continue()
     {
-        loader.ContinueFromShop();
+        gameManager.ContinueFromShop();
     }
 
     void Update()

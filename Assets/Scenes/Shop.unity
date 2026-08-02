@@ -1679,10 +1679,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopManager
   time: 0
-  costMultipliers:
-  - 0.7
-  - 0.8
-  - 1.2
   itemIcons:
   - {fileID: 1510555097}
   - {fileID: 437920094}
@@ -1732,6 +1728,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemDatabase
   items:
   - {fileID: 11400000, guid: 72c6a20c61cbd2b408f54843bafd49f2, type: 2}
+  - {fileID: 11400000, guid: ef24858f624e51e4eb76904e7e257dba, type: 2}
+  - {fileID: 11400000, guid: 969e850e7b14ee54e9701b8b1ef1068b, type: 2}
+  - {fileID: 11400000, guid: db9bca3b62d7a8c4a98136be84dbbe1c, type: 2}
+  - {fileID: 11400000, guid: 459017aabd34b7545bcf9a6cb4b92dca, type: 2}
 --- !u!1 &837612917
 GameObject:
   m_ObjectHideFlags: 0

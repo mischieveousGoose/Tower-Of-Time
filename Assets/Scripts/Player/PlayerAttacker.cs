@@ -32,7 +32,7 @@ public class PlayerAttacker : MonoBehaviour
     {
         sfxManager = FindFirstObjectByType<SFXManager>();
         wpDamager = weapon.GetComponent<Damager>();
-        wpDamager.damage *= (100 + StatsManager.Instance.GetStat(StatType.Damage)) / 100;
+        wpDamager.damage *= StatsManager.Instance.GetStat(StatType.Damage);
 
         movement = GetComponent<PlayerMovement>();
         cam = Camera.main;

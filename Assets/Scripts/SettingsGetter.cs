@@ -14,7 +14,6 @@ public class SettingsGetter : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Assigning Values");
         settingsManager = FindFirstObjectByType<SettingsManager>();
         Debug.Log(settingsManager);
         settingsManager.sfxSlider = sfxSlider;

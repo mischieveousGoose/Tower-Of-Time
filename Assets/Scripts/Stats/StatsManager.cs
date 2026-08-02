@@ -118,13 +118,13 @@ public class StatsManager : MonoBehaviour
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        LevelLoader.Instance.OnReset += ResetStats;
+        GameManager.Instance.OnReset += ResetStats;
     }
 
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        LevelLoader.Instance.OnReset -= ResetStats;
+        GameManager.Instance.OnReset -= ResetStats;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour, Attackable
             return;
         }
 
-        sfxManager.PlaySFX(5);
+
 
 
         health -= damage;
@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour, Attackable
             float mult = 1f;
             mult *= comboManager.GetCombo(transform.position);
             mult *= timeRewardMults[settingsManager.difficulty];
-            FindFirstObjectByType<Timer>().AddTime(timeReward * mult);
+            FindFirstObjectByType<Player>().AddTime(timeReward * mult);
             comboManager.GainPopup(mult * timeReward, transform.position);
             Destroy(gameObject);
         }

@@ -13,8 +13,6 @@ public class ComboManager : MonoBehaviour
 
     void Start()
     {
-
-
         popupSpawner = FindFirstObjectByType<DamagePopupSpawner>();
         comboSustainTime = StatsManager.Instance.GetStat(StatType.ComboSustainTime);
         comboMultIncrease = StatsManager.Instance.GetStat(StatType.ComboMultIncrease);

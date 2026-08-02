@@ -4,6 +4,6 @@ public class MainMenu : MonoBehaviour
 {
     public void Play()
     {
-        LevelLoader.Instance.Play();
+        GameManager.Instance.Play();
     }
 }

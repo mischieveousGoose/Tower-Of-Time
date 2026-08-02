@@ -164,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Finish"))
         {
-            LevelLoader.Instance.ContinueFromLevel();
+            GameManager.Instance.ContinueFromLevel();
         }
 
         if (collision.gameObject.CompareTag("Fight"))

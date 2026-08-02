@@ -133,7 +133,7 @@ public class Boss : MonoBehaviour, Attackable
 
     public void Menu()
     {
-        LevelLoader.Instance.Menu();
+        GameManager.Instance.Menu();
     }
 
 

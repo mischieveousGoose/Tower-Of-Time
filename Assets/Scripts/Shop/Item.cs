@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Custom/Item")]
+
 public abstract class Item : ScriptableObject
 {
     public Sprite icon;
@@ -11,8 +11,6 @@ public abstract class Item : ScriptableObject
 
     public bool hasMaxCount;
     public int maxCount;
-
-
 
     [TextArea(3, 7)]
     public string description;

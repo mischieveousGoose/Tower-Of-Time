@@ -1474,7 +1474,7 @@ GameObject:
   - component: {fileID: 426960921}
   - component: {fileID: 426960920}
   m_Layer: 0
-  m_Name: 'LevelLoader '
+  m_Name: GameManager
   m_TagString: Level Loader
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1493,7 +1493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelLoader
   level: 1
-  bossLevel: 2
+  bossLevel: 10
   startingTimes:
   - 45
   - 40

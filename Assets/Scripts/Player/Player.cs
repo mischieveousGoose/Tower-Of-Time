@@ -1,19 +1,18 @@
 using TMPro;
 using UnityEngine;
 
-public class Timer : MonoBehaviour
+public class Player : MonoBehaviour
 {
 
     public float startingTime;
     float timer;
 
     public TMP_Text timerText;
-    LevelLoader levelLoader;
+
 
     void Start()
     {
-        levelLoader = FindFirstObjectByType<LevelLoader>();
-        timer = levelLoader.time;
+        timer = GameManager.Instance.time;
     }
 
     public float GetTime() { return timer; }

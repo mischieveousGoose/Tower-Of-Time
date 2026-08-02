@@ -14,8 +14,6 @@ public class LevelSpawner : MonoBehaviour
     public int startRooms;
     public int increaseAmount;
 
-    LevelLoader levelLoader;
-
     void GenerateLevel()
     {
         Transform endTransform;
@@ -30,8 +28,7 @@ public class LevelSpawner : MonoBehaviour
 
     void Start()
     {
-        levelLoader = FindFirstObjectByType<LevelLoader>();
-        int level = levelLoader.level;
+        int level = GameManager.Instance.level;
         levelLength = startRooms + ((level - 1) * increaseAmount);
         GenerateLevel();
 

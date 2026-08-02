@@ -13,7 +13,7 @@ public class Stats
 
     public Stats()
     {
-        damage = 0f;
+        damage = 1f;
         speed = 12f;
         comboSustainTime = 2f;
         comboMultIncrease = 0.1f;
