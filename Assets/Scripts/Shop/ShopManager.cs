@@ -11,18 +11,9 @@ public class ShopManager : MonoBehaviour
     ItemDatabase db;
     public float time;
 
-
     float shopTimer;
+    List<Item> inventory => InventoryManager.Instance.inventory;
 
-
-
-    List<Item> inventory
-    {
-        get
-        {
-            return InventoryManager.Instance.inventory;
-        }
-    }
 
 
     [Header("UI")]
@@ -143,7 +134,7 @@ public class ShopManager : MonoBehaviour
         {
             itemIcons[i].sprite = stock[i].icon;
             itemNameTexts[i].text = stock[i].itemName;
-            itemCostTexts[i].text = RoundFloat(stock[i].cost).ToString() + "s";
+            itemCostTexts[i].text = RoundFloat(GetItemCost(stock[i])).ToString() + "s";
             itemDescTexts[i].text = stock[i].description.ToString();
         }
     }
@@ -153,16 +144,21 @@ public class ShopManager : MonoBehaviour
         return Mathf.Round(val * 100) / 100;
     }
 
+    float GetItemCost(Item item)
+    {
+        return item.cost * StatsManager.Instance.GetStat(StatType.ShopPrices);
+    }
+
 
 
     public void BuyItem(int i)
     {
         if (shopTimer > 0f) return;
         Item buyItem = stock[i];
-        if (time < buyItem.cost) return;
+        if (time < GetItemCost(buyItem)) return;
 
         sfxManager.PlaySFX(2);
-        time -= buyItem.cost;
+        time -= GetItemCost(buyItem);
 
         inventory.Add(buyItem);
 
@@ -170,6 +166,8 @@ public class ShopManager : MonoBehaviour
         {
             onBuy.OnBuy(this);
         }
+
+        StatsManager.Instance.CalculateStats();
 
         Instantiate(inventoryPrefab, inventoryParent).GetComponent<Image>().sprite = buyItem.icon;
         stock[i] = PullValidItem();
@@ -185,6 +183,7 @@ public class ShopManager : MonoBehaviour
     void Update()
     {
         shopTimer -= Time.deltaTime;
+        RenderShop();
     }
 
 }

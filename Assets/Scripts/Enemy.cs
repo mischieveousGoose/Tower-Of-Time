@@ -13,9 +13,6 @@ public class Enemy : MonoBehaviour, Attackable
     SpriteRenderer sr;
     SettingsManager settingsManager;
 
-    float[] timeRewardMults = new float[] { 1.5f, 1.3f, 0.7f };
-
-
     void Start()
     {
         settingsManager = FindFirstObjectByType<SettingsManager>();
@@ -45,9 +42,6 @@ public class Enemy : MonoBehaviour, Attackable
             return;
         }
 
-
-
-
         health -= damage;
         iFrameTimer = 0.5f;
         if (health <= 0)
@@ -55,7 +49,7 @@ public class Enemy : MonoBehaviour, Attackable
 
             float mult = 1f;
             mult *= comboManager.GetCombo(transform.position);
-            mult *= timeRewardMults[settingsManager.difficulty];
+            mult *= StatsManager.Instance.GetStat(StatType.EnemyTimeReward);
             FindFirstObjectByType<Player>().AddTime(timeReward * mult);
             comboManager.GainPopup(mult * timeReward, transform.position);
             Destroy(gameObject);

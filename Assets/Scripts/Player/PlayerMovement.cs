@@ -33,10 +33,12 @@ public class PlayerMovement : MonoBehaviour
     private int extraJumps = 0;
     int extraJumpsRemaining;
 
-    PlayerAttacker attacker;
+    PlayerCombat attacker;
 
     bool isFlipped = false;
     bool canFlip;
+
+    float frictionDisabledTime;
 
     SFXManager sfxManager;
 
@@ -46,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        attacker = GetComponent<PlayerAttacker>();
+        attacker = GetComponent<PlayerCombat>();
 
         extraJumps = 0;
         moveSpeed = StatsManager.Instance.GetStat(StatType.Speed);
@@ -59,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        frictionDisabledTime -= Time.deltaTime;
         if (Input.GetAxisRaw("Horizontal") != 0)
         {
             sr.flipX = Input.GetAxisRaw("Horizontal") < -0.1f;
@@ -104,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        if (!isGrounded() && rb.linearVelocity.y > 0f && Input.GetButtonUp("Jump") && !attacker.isAttacking)
+        if (!isGrounded() && rb.linearVelocity.y > 0f && Input.GetButtonUp("Jump") && frictionDisabledTime < 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
         }
@@ -136,15 +139,20 @@ public class PlayerMovement : MonoBehaviour
             sfxManager.PlaySFX(1);
         }
 
-        if (!attacker.isAttacking && rb.linearVelocity.magnitude > maxVel)
+        if (frictionDisabledTime < 0f && rb.linearVelocity.magnitude > maxVel)
         {
             rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxVel);
         }
     }
 
+    public void DisableFriction(float time)
+    {
+        frictionDisabledTime = time;
+    }
+
     void FixedUpdate()
     {
-        if (attacker.isAttacking) return; // let the dash velocity ride, untouched
+        if (frictionDisabledTime >= 0f) return;
 
         float targetSpeed = Input.GetAxisRaw("Horizontal") * moveSpeed;
         float speedDif = targetSpeed - rb.linearVelocity.x;

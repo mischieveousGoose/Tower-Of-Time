@@ -10,7 +10,7 @@ public class StatsManager : MonoBehaviour
 
     public Stats startStats;
     [HideInInspector] public Stats stats;
-    Stats tempStats;
+    public Stats curStats;
 
     Dictionary<StatType, float> statMultipliers;
 
@@ -45,7 +45,7 @@ public class StatsManager : MonoBehaviour
     public void ResetStats()
     {
         stats = startStats;
-        tempStats = null;
+        curStats = null;
         ResetMultipliers();
     }
 
@@ -54,16 +54,23 @@ public class StatsManager : MonoBehaviour
         switch (type)
         {
             case StatType.Damage:
-                return tempStats.damage;
+                return curStats.damage;
 
             case StatType.ComboMultIncrease:
-                return tempStats.comboMultIncrease;
+                return curStats.comboMultIncrease;
 
             case StatType.Speed:
-                return tempStats.speed;
+                return curStats.speed;
 
             case StatType.ComboSustainTime:
-                return tempStats.comboSustainTime;
+                return curStats.comboSustainTime;
+
+            case StatType.EnemyTimeReward:
+                return curStats.enemyTimeReward;
+
+            case StatType.ShopPrices:
+                return curStats.shopPrices;
+
             default:
                 return -1;
         }
@@ -74,27 +81,34 @@ public class StatsManager : MonoBehaviour
         switch (type)
         {
             case StatType.Damage:
-                tempStats.damage = value;
+                curStats.damage = value;
                 break;
 
             case StatType.ComboMultIncrease:
-                tempStats.comboMultIncrease = value;
+                curStats.comboMultIncrease = value;
                 break;
 
             case StatType.Speed:
-                tempStats.speed = value;
+                curStats.speed = value;
                 break;
 
             case StatType.ComboSustainTime:
-                tempStats.comboSustainTime = value;
+                curStats.comboSustainTime = value;
                 break;
+            case StatType.EnemyTimeReward:
+                curStats.enemyTimeReward = value;
+                break;
+            case StatType.ShopPrices:
+                curStats.shopPrices = value;
+                break;
+
 
         }
     }
 
     public void CalculateStats()
     {
-        tempStats = stats.Clone();
+        curStats = stats.Clone();
         ResetMultipliers();
 
         List<IOnSetStats> items = InventoryManager.Instance.GetInterfaceList<IOnSetStats>();
@@ -112,7 +126,7 @@ public class StatsManager : MonoBehaviour
                 SetStat(stat, value * multiplier);
             }
         }
-        stats = tempStats;
+        stats = curStats;
     }
 
     void OnEnable()
@@ -129,7 +143,7 @@ public class StatsManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "SampleScene" || scene.name == "Tutorial" || scene.name == "Boss Fight")
+        if (scene.name != "Menu" && scene.name != "Cutscene")
         {
             CalculateStats();
         }
