@@ -1679,6 +1679,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopManager
   time: 0
+  primaryWeapon: {fileID: 0}
+  secondaryWeapon: {fileID: 0}
   itemIcons:
   - {fileID: 1510555097}
   - {fileID: 437920094}
@@ -1734,6 +1736,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5a80c881886605244848837e49adc35c, type: 2}
   - {fileID: 11400000, guid: db9bca3b62d7a8c4a98136be84dbbe1c, type: 2}
   - {fileID: 11400000, guid: 72c6a20c61cbd2b408f54843bafd49f2, type: 2}
+  - {fileID: 11400000, guid: 45de085b7a2b10d4eae06d6c7067b72a, type: 2}
 --- !u!1 &837612917
 GameObject:
   m_ObjectHideFlags: 0

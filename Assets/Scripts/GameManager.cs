@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
 
     bool completedTutorial = false;
 
+    public GameObject primaryWeapon;
+    public GameObject secondaryWeapon;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -81,7 +84,10 @@ public class GameManager : MonoBehaviour
 
     public void ContinueFromShop()
     {
-        time = FindFirstObjectByType<ShopManager>().time;
+        ShopManager shopManager = FindFirstObjectByType<ShopManager>();
+        time = shopManager.time;
+        primaryWeapon = shopManager.primaryWeapon;
+        secondaryWeapon = shopManager.secondaryWeapon;
         level++;
 
         if (level == bossLevel)

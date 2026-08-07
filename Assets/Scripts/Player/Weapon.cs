@@ -6,6 +6,8 @@ public abstract class Weapon : MonoBehaviour
     public float damage;
     public float attackCooldown;
 
+    public Sprite icon;
+
     private float attackTimer;
     protected bool canAttack => attackTimer <= 0;
 
@@ -15,8 +17,12 @@ public abstract class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if (attackTimer > 0)
-            attackTimer -= Time.deltaTime;
+        attackTimer -= Time.deltaTime;
+        WeaponUpdate();
+    }
+
+    protected virtual void WeaponUpdate()
+    {
     }
 
     private void OnEnable()
@@ -28,6 +34,7 @@ public abstract class Weapon : MonoBehaviour
 
     public void OnUse()
     {
+
         if (!canAttack)
             return;
 

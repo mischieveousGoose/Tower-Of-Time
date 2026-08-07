@@ -1499,6 +1499,8 @@ MonoBehaviour:
   - 40
   - 25
   time: 0
+  primaryWeapon: {fileID: 8175336237109619763, guid: 66e393a4ba543d849b352cc27269f816, type: 3}
+  secondaryWeapon: {fileID: 0}
 --- !u!4 &426960921
 Transform:
   m_ObjectHideFlags: 0
@@ -3009,11 +3011,22 @@ MonoBehaviour:
   startStats:
     damage: 1
     speed: 12
+    shopPrices: 1
+    enemyTimeReward: 1
     comboSustainTime: 2
     comboMultIncrease: 0.1
   stats:
     damage: 0
     speed: 12
+    shopPrices: 1
+    enemyTimeReward: 1
+    comboSustainTime: 2
+    comboMultIncrease: 0.1
+  curStats:
+    damage: 1
+    speed: 12
+    shopPrices: 1
+    enemyTimeReward: 1
     comboSustainTime: 2
     comboMultIncrease: 0.1
 --- !u!1 &1155593906

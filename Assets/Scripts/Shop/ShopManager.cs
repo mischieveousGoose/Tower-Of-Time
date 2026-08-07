@@ -14,6 +14,9 @@ public class ShopManager : MonoBehaviour
     float shopTimer;
     List<Item> inventory => InventoryManager.Instance.inventory;
 
+    [HideInInspector] public GameObject primaryWeapon;
+    [HideInInspector] public GameObject secondaryWeapon;
+
 
 
     [Header("UI")]
@@ -39,6 +42,9 @@ public class ShopManager : MonoBehaviour
         shopTimer = 1;
         db = GetComponent<ItemDatabase>();
         time = gameManager.time;
+
+        primaryWeapon = gameManager.primaryWeapon;
+        secondaryWeapon = gameManager.secondaryWeapon;
 
         if (gameManager.level + 1 == gameManager.bossLevel)
         {
@@ -157,10 +163,12 @@ public class ShopManager : MonoBehaviour
         Item buyItem = stock[i];
         if (time < GetItemCost(buyItem)) return;
 
+        if (buyItem is WeaponItem && WeaponsFull()) return;
+
         sfxManager.PlaySFX(2);
         time -= GetItemCost(buyItem);
 
-        inventory.Add(buyItem);
+
 
         if (buyItem is IOnBuy onBuy)
         {
@@ -169,10 +177,26 @@ public class ShopManager : MonoBehaviour
 
         StatsManager.Instance.CalculateStats();
 
-        Instantiate(inventoryPrefab, inventoryParent).GetComponent<Image>().sprite = buyItem.icon;
+        if (!(buyItem is WeaponItem))
+        {
+            Instantiate(inventoryPrefab, inventoryParent).GetComponent<Image>().sprite = buyItem.icon;
+            inventory.Add(buyItem);
+        }
+
         stock[i] = PullValidItem();
 
         RenderShop();
+    }
+
+    bool WeaponsFull()
+    {
+        return primaryWeapon != null && secondaryWeapon != null;
+    }
+
+    public void AddWeapon(GameObject weapon)
+    {
+        if (primaryWeapon == null) primaryWeapon = weapon;
+        else if (secondaryWeapon == null) secondaryWeapon = weapon;
     }
 
     public void Continue()

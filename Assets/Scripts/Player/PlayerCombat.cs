@@ -1,18 +1,39 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerCombat : MonoBehaviour
 {
-    public GameObject primaryWeaponObject;
-    public GameObject secondaryWeaponObject;
+    GameObject primaryWeaponObject;
+    GameObject secondaryWeaponObject;
 
     private Weapon primaryWeapon;
     private Weapon secondaryWeapon;
 
+    [Header("UI")]
+    public Image primaryIcon;
+    public Image secondaryIcon;
+
     void Start()
     {
-        primaryWeapon = Instantiate(primaryWeaponObject, transform.parent).GetComponent<Weapon>();
-        secondaryWeapon = Instantiate(secondaryWeaponObject, transform.parent).GetComponent<Weapon>();
+        primaryIcon.enabled = false;
+        secondaryIcon.enabled = false;
+        if (GameManager.Instance.primaryWeapon != null)
+        {
+            primaryWeaponObject = GameManager.Instance.primaryWeapon;
+            primaryWeapon = Instantiate(primaryWeaponObject, transform).GetComponent<Weapon>();
+            primaryIcon.enabled = true;
+            primaryIcon.sprite = primaryWeapon.icon;
+        }
+
+        if (GameManager.Instance.secondaryWeapon != null)
+        {
+            secondaryWeaponObject = GameManager.Instance.secondaryWeapon;
+            secondaryWeapon = Instantiate(secondaryWeaponObject, transform).GetComponent<Weapon>();
+            secondaryIcon.enabled = true;
+            secondaryIcon.sprite = secondaryWeapon.icon;
+        }
     }
 
     void Update()
@@ -22,7 +43,7 @@ public class PlayerCombat : MonoBehaviour
             primaryWeapon.OnUse();
         }
 
-        if (Mouse.current.rightButton.wasPressedThisFrame && primaryWeapon != null)
+        if (Mouse.current.rightButton.wasPressedThisFrame && secondaryWeapon != null)
         {
             secondaryWeapon.OnUse();
         }

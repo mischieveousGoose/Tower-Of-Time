@@ -9,17 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bb08cbb727416541beec8d55459e0b9, type: 3}
-  m_Name: Sharper Blade
-  m_EditorClassIdentifier: Assembly-CSharp::StatChanger
+  m_Script: {fileID: 11500000, guid: 300c630a0f4570a408982a0f41f791fc, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponItem
   icon: {fileID: -488721925442295091, guid: 020227956d0ade743826e9f167311608, type: 3}
-  itemName: Sharper Blade
-  cost: 10
+  itemName: Sword
+  cost: 2
   disableSell: 0
   hasMaxCount: 0
   maxCount: 0
-  description: +25% Damage
-  statModifications:
-  - stat: 0
-    mod: 25
-    modType: 0
+  description: Gives you a sword
+  weaponPrefab: {fileID: 8175336237109619763, guid: 66e393a4ba543d849b352cc27269f816, type: 3}

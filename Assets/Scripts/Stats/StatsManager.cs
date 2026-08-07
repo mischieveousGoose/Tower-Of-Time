@@ -108,8 +108,9 @@ public class StatsManager : MonoBehaviour
 
     public void CalculateStats()
     {
+        ResetStats();
         curStats = stats.Clone();
-        ResetMultipliers();
+
 
         List<IOnSetStats> items = InventoryManager.Instance.GetInterfaceList<IOnSetStats>();
         foreach (IOnSetStats item in items)

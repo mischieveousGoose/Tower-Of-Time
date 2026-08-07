@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Sword : Weapon
@@ -11,10 +12,9 @@ public class Sword : Weapon
 
     public float dashVelocity;
     public GameObject swordPrefab;
-    public float swordDestroyTime;
     public float attackTime;
 
-    private void Update()
+    protected override void WeaponUpdate()
     {
         regainDashCooldown -= Time.deltaTime;
         if (movement.isGrounded() && regainDashCooldown < 0f)
@@ -35,7 +35,7 @@ public class Sword : Weapon
         if (!canDash) return;
 
         canDash = false;
-        regainDashCooldown = 0.5f;
+        regainDashCooldown = 0.03f;
 
         Vector2 direction = GetAimingDirection();
         direction = SnapToDegrees(direction, 45f, out float angle);

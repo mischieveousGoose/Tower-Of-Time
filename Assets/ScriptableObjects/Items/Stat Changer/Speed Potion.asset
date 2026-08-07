@@ -18,8 +18,8 @@ MonoBehaviour:
   disableSell: 0
   hasMaxCount: 0
   maxCount: 0
-  description: +25% Speed
+  description: +10% Speed
   statModifications:
   - stat: 1
-    mod: 0.25
+    mod: 0.1
     modType: 0
