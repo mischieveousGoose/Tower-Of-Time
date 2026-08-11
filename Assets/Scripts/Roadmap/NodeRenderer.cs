@@ -38,6 +38,10 @@ public class NodeRenderer : MonoBehaviour
         {
             sr.color = Color.yellow;
         }
+        else if (roadmap.currentNode.nextNodes.Contains(node))
+        {
+            sr.color = Color.green;
+        }
         else
         {
             sr.color = Color.white;

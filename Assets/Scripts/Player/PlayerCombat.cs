@@ -19,17 +19,17 @@ public class PlayerCombat : MonoBehaviour
     {
         primaryIcon.enabled = false;
         secondaryIcon.enabled = false;
-        if (GameManager.Instance.primaryWeapon != null)
+        if (GameManager.Instance.runData.primaryWeapon != null)
         {
-            primaryWeaponObject = GameManager.Instance.primaryWeapon;
+            primaryWeaponObject = GameManager.Instance.runData.primaryWeapon;
             primaryWeapon = Instantiate(primaryWeaponObject, transform).GetComponent<Weapon>();
             primaryIcon.enabled = true;
             primaryIcon.sprite = primaryWeapon.icon;
         }
 
-        if (GameManager.Instance.secondaryWeapon != null)
+        if (GameManager.Instance.runData.secondaryWeapon != null)
         {
-            secondaryWeaponObject = GameManager.Instance.secondaryWeapon;
+            secondaryWeaponObject = GameManager.Instance.runData.secondaryWeapon;
             secondaryWeapon = Instantiate(secondaryWeaponObject, transform).GetComponent<Weapon>();
             secondaryIcon.enabled = true;
             secondaryIcon.sprite = secondaryWeapon.icon;

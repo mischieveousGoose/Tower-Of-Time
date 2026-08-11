@@ -9,22 +9,17 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
+    public GameObject wp;
     public static GameManager Instance;
-
     public event Action OnReset;
 
-    public int level = 1;
     public int bossLevel;
     SettingsManager settingsManager;
 
-    public float[] startingTimes;
-    bool startedGame;
-    [HideInInspector] public float time;
+    public float startTime;
 
     bool completedTutorial = false;
-
-    public GameObject primaryWeapon;
-    public GameObject secondaryWeapon;
+    public RunData runData;
 
     private void Awake()
     {
@@ -42,32 +37,30 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         settingsManager = FindFirstObjectByType<SettingsManager>();
-        if (!startedGame)
-        {
-            time = startingTimes[settingsManager.difficulty];
-            startedGame = true;
-            level = 1;
-        }
-
     }
 
 
     public void Retry()
     {
         OnReset?.Invoke();
-        startedGame = false;
-        time = startingTimes[settingsManager.difficulty];
-        level = 1;
+        runData = new RunData(startTime, wp);
         SceneManager.LoadScene("SampleScene");
 
     }
 
     public void RetryTutorial()
     {
-        startedGame = false;
-        time = startingTimes[settingsManager.difficulty];
-        level = 1;
+        runData = new RunData(startTime, wp);
         SceneManager.LoadScene("Tutorial");
+    }
+
+    public void ContinueFromRoadmap(string sceneName)
+    {
+        Roadmap roadmap = FindFirstObjectByType<Roadmap>();
+        runData.rootNode = roadmap.rootNode;
+        runData.currentNode = roadmap.currentNode;
+        runData.level++;
+        SceneManager.LoadScene(sceneName);
     }
 
     public void Play()
@@ -85,19 +78,12 @@ public class GameManager : MonoBehaviour
     public void ContinueFromShop()
     {
         ShopManager shopManager = FindFirstObjectByType<ShopManager>();
-        time = shopManager.time;
-        primaryWeapon = shopManager.primaryWeapon;
-        secondaryWeapon = shopManager.secondaryWeapon;
-        level++;
+        runData.time = shopManager.time;
+        runData.primaryWeapon = shopManager.primaryWeapon;
+        runData.secondaryWeapon = shopManager.secondaryWeapon;
 
-        if (level == bossLevel)
-        {
-            SceneManager.LoadScene("Boss Fight");
-        }
-        else
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
+
+        SceneManager.LoadScene("Roadmap");
     }
 
     public void ContinueFromLevel()
@@ -117,16 +103,14 @@ public class GameManager : MonoBehaviour
             item.OnRoundEnd(player);
         }
 
-        time = player.GetTime();
-        SceneManager.LoadScene("Shop");
+        runData.time = player.GetTime();
+        SceneManager.LoadScene("Roadmap");
     }
 
     public void Menu()
     {
         OnReset?.Invoke();
-        startedGame = false;
-        time = startingTimes[settingsManager.difficulty];
-        level = 1;
+        runData = new RunData(startTime, wp);
 
         SceneManager.LoadScene("Menu");
     }

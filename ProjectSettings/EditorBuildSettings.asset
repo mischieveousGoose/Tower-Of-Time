@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial.unity
     guid: cb844255eb05e4244a581e44611dffea
   - enabled: 1
+    path: Assets/Scenes/Roadmap.unity
+    guid: 67ce7a91450e3144cb0ab7d1f4adef8b
+  - enabled: 1
     path: Assets/Scenes/Cutscene.unity
     guid: 56456a0148bf84046adfce64fa2a48f2
   m_configObjects:

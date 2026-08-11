@@ -1492,15 +1492,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6dc56ba960b4224bb9ba22d4fb316ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelLoader
-  level: 1
+  wp: {fileID: 8175336237109619763, guid: 66e393a4ba543d849b352cc27269f816, type: 3}
   bossLevel: 10
-  startingTimes:
-  - 45
-  - 40
-  - 25
-  time: 0
-  primaryWeapon: {fileID: 8175336237109619763, guid: 66e393a4ba543d849b352cc27269f816, type: 3}
-  secondaryWeapon: {fileID: 0}
+  startTime: 30
 --- !u!4 &426960921
 Transform:
   m_ObjectHideFlags: 0

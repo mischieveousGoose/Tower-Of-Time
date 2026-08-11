@@ -43,4 +43,5 @@ public enum NodeType
 {
     Level,
     Shop,
+    Boss
 }

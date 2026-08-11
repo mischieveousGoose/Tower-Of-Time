@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        timer = GameManager.Instance.time;
+        timer = GameManager.Instance.runData.time;
     }
 
     public float GetTime() { return timer; }

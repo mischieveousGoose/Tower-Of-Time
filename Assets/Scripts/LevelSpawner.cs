@@ -28,7 +28,7 @@ public class LevelSpawner : MonoBehaviour
 
     void Start()
     {
-        int level = GameManager.Instance.level;
+        int level = GameManager.Instance.runData.level;
         levelLength = startRooms + ((level - 1) * increaseAmount);
         GenerateLevel();
 

@@ -32,6 +32,7 @@ public class ShopManager : MonoBehaviour
     SettingsManager settingsManager;
 
     GameManager gameManager => GameManager.Instance;
+    RunData runData => GameManager.Instance.runData;
 
 
     void Start()
@@ -41,18 +42,18 @@ public class ShopManager : MonoBehaviour
         Time.timeScale = 1;
         shopTimer = 1;
         db = GetComponent<ItemDatabase>();
-        time = gameManager.time;
+        time = gameManager.runData.time;
 
-        primaryWeapon = gameManager.primaryWeapon;
-        secondaryWeapon = gameManager.secondaryWeapon;
+        primaryWeapon = runData.primaryWeapon;
+        secondaryWeapon = runData.secondaryWeapon;
 
-        if (gameManager.level + 1 == gameManager.bossLevel)
+        if (runData.level + 1 == gameManager.bossLevel)
         {
             nextLevelText.text = "-> Final Floor";
         }
         else
         {
-            nextLevelText.text = "-> Floor " + (gameManager.level + 1).ToString() + "/10";
+            nextLevelText.text = "-> Floor " + (runData.level + 1).ToString() + "/10";
         }
 
         RefreshStock();
