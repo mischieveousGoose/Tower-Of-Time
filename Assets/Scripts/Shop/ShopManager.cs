@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +25,9 @@ public class ShopManager : MonoBehaviour
     public List<TMP_Text> itemNameTexts;
     public List<TMP_Text> itemDescTexts;
     public List<TMP_Text> itemCostTexts;
+
+    public Image primaryWPIcon;
+    public Image secondaryWPIcon;
 
     public TMP_Text moneyText;
     public TMP_Text nextLevelText;
@@ -137,12 +141,28 @@ public class ShopManager : MonoBehaviour
     void RenderShop()
     {
         moneyText.text = RoundFloat(time).ToString() + "s";
+
         for (int i = 0; i < 3; i++)
         {
             itemIcons[i].sprite = stock[i].icon;
             itemNameTexts[i].text = stock[i].itemName;
             itemCostTexts[i].text = RoundFloat(GetItemCost(stock[i])).ToString() + "s";
             itemDescTexts[i].text = stock[i].description.ToString();
+        }
+
+        if (primaryWeapon == null) primaryWPIcon.enabled = false;
+        else
+        {
+            primaryWPIcon.enabled = true;
+            primaryWPIcon.sprite = primaryWeapon.GetComponent<Weapon>().item.icon;
+        }
+
+
+        if (secondaryWeapon == null) secondaryWPIcon.enabled = false;
+        else
+        {
+            secondaryWPIcon.enabled = true;
+            secondaryWPIcon.sprite = secondaryWeapon.GetComponent<Weapon>().item.icon;
         }
     }
 
@@ -176,13 +196,14 @@ public class ShopManager : MonoBehaviour
             onBuy.OnBuy(this);
         }
 
-        StatsManager.Instance.CalculateStats();
+
 
         if (!(buyItem is WeaponItem))
         {
             Instantiate(inventoryPrefab, inventoryParent).GetComponent<Image>().sprite = buyItem.icon;
             inventory.Add(buyItem);
         }
+        StatsManager.Instance.CalculateStats();
 
         stock[i] = PullValidItem();
 
@@ -194,10 +215,36 @@ public class ShopManager : MonoBehaviour
         return primaryWeapon != null && secondaryWeapon != null;
     }
 
+    public void SwitchWeaponSlots()
+    {
+        GameObject temp = primaryWeapon;
+        primaryWeapon = secondaryWeapon;
+        secondaryWeapon = temp;
+        RenderShop();
+    }
+
     public void AddWeapon(GameObject weapon)
     {
         if (primaryWeapon == null) primaryWeapon = weapon;
         else if (secondaryWeapon == null) secondaryWeapon = weapon;
+    }
+
+    public void SellWeapon(bool isPrimary)
+    {
+        if (isPrimary)
+        {
+            if (primaryWeapon == null) return;
+            time += primaryWeapon.GetComponent<Weapon>().item.cost / 2;
+            primaryWeapon = null;
+        }
+        else
+        {
+            if (secondaryWeapon == null) return;
+            time += secondaryWeapon.GetComponent<Weapon>().item.cost / 2;
+            secondaryWeapon = null;
+        }
+
+        RenderShop();
     }
 
     public void Continue()

@@ -37,6 +37,7 @@ public class Enemy : MonoBehaviour, Attackable
 
     public void TakeDamage(float damage)
     {
+
         if (iFrameTimer > 0f)
         {
             return;
@@ -46,6 +47,7 @@ public class Enemy : MonoBehaviour, Attackable
         iFrameTimer = 0.5f;
         if (health <= 0)
         {
+            if (comboManager == null) comboManager = FindFirstObjectByType<ComboManager>();
 
             float mult = 1f;
             mult *= comboManager.GetCombo(transform.position);

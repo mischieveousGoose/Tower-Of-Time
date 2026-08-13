@@ -24,7 +24,7 @@ public class PlayerCombat : MonoBehaviour
             primaryWeaponObject = GameManager.Instance.runData.primaryWeapon;
             primaryWeapon = Instantiate(primaryWeaponObject, transform).GetComponent<Weapon>();
             primaryIcon.enabled = true;
-            primaryIcon.sprite = primaryWeapon.icon;
+            primaryIcon.sprite = primaryWeapon.item.icon;
         }
 
         if (GameManager.Instance.runData.secondaryWeapon != null)
@@ -32,7 +32,7 @@ public class PlayerCombat : MonoBehaviour
             secondaryWeaponObject = GameManager.Instance.runData.secondaryWeapon;
             secondaryWeapon = Instantiate(secondaryWeaponObject, transform).GetComponent<Weapon>();
             secondaryIcon.enabled = true;
-            secondaryIcon.sprite = secondaryWeapon.icon;
+            secondaryIcon.sprite = secondaryWeapon.item.icon;
         }
     }
 

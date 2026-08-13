@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IOnSetStats
 {
-    public void OnSetStats(Dictionary<StatType, float> curStats);
+    public void OnSetStats(Dictionary<StatType, StatMultiplier> curStats);
 }

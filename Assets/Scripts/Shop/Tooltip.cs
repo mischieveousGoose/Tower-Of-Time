@@ -21,33 +21,68 @@ public class Tooltip : MonoBehaviour
     void Update()
     {
         GameObject hover = GetUIObjectUnderMouse();
-        if (hover != null)
+        if (hover == null)
         {
-            tooltip.SetActive(true);
-            Item hoverItem = InventoryManager.Instance.inventory[hover.transform.GetSiblingIndex()];
+            tooltip.SetActive(false);
+            return;
+        }
 
-            ttHead.text = hoverItem.itemName;
-            ttBody.text = hoverItem.description;
-            if (hoverItem.disableSell)
-            {
-                ttSellText.gameObject.SetActive(false);
-            }
-            else
-            {
-                ttSellText.gameObject.SetActive(true);
-                ttSellText.text = "Right click to sell for " + hoverItem.cost / 2 + "s.";
-            }
+        tooltip.SetActive(true);
+        tooltip.transform.position = Input.mousePosition;
 
-            tooltip.transform.position = Input.mousePosition;
-
-            if (Input.GetMouseButtonDown(1) && !hoverItem.disableSell)
-            {
-                shopManager.SellItem(hover.transform.GetSiblingIndex());
-            }
+        if (hover.name == "WPIcon")
+        {
+            WeaponTooltip(hover);
         }
         else
         {
-            tooltip.SetActive(false);
+            ItemTooltip(hover);
+        }
+    }
+
+    void ItemTooltip(GameObject hover)
+    {
+        Item hoverItem = InventoryManager.Instance.inventory[hover.transform.GetSiblingIndex()];
+
+        ttHead.text = hoverItem.itemName;
+        ttBody.text = hoverItem.description;
+        if (hoverItem.disableSell)
+        {
+            ttSellText.gameObject.SetActive(false);
+        }
+        else
+        {
+            ttSellText.gameObject.SetActive(true);
+            ttSellText.text = "Right click to sell for " + hoverItem.cost / 2 + "s.";
+        }
+
+        if (Input.GetMouseButtonDown(1) && !hoverItem.disableSell)
+        {
+            shopManager.SellItem(hover.transform.GetSiblingIndex());
+        }
+    }
+
+    void WeaponTooltip(GameObject hover)
+    {
+        bool isPrimary = hover.transform.parent.GetSiblingIndex() == 0;
+        Item item = (isPrimary ? shopManager.primaryWeapon : shopManager.secondaryWeapon).GetComponent<Weapon>().item;
+
+
+        ttHead.text = item.itemName;
+        ttBody.text = item.description;
+        if (item.disableSell)
+        {
+            ttSellText.gameObject.SetActive(false);
+        }
+        else
+        {
+            ttSellText.gameObject.SetActive(true);
+            ttSellText.text = "Right click to sell for " + item.cost / 2 + "s.";
+        }
+
+        if (Input.GetMouseButtonDown(1) && !item.disableSell)
+        {
+            shopManager.SellWeapon(isPrimary);
         }
     }
 

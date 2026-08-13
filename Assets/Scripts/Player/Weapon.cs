@@ -6,7 +6,7 @@ public abstract class Weapon : MonoBehaviour
     public float damage;
     public float attackCooldown;
 
-    public Sprite icon;
+    public Item item;
 
     private float attackTimer;
     protected bool canAttack => attackTimer <= 0;

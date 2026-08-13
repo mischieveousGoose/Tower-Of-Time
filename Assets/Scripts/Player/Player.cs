@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
 
     public float startingTime;
+    public float maxTime;
     float timer;
 
     public TMP_Text timerText;
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         timer = GameManager.Instance.runData.time;
+        maxTime = StatsManager.Instance.GetStat(StatType.MaxTime);
     }
 
     public float GetTime() { return timer; }
@@ -20,12 +22,14 @@ public class Player : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        timerText.text = (Mathf.Round(timer * 100) / 100).ToString();
+        timerText.text = (Mathf.Round(timer * 100) / 100).ToString() + "/" + maxTime.ToString();
 
         if (timer <= 0)
         {
             FindFirstObjectByType<TimeManager>().Lose();
         }
+
+        timer = Mathf.Min(maxTime, timer);
     }
 
     public void AddTime(float amount)

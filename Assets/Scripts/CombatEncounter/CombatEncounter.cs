@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
 
 public class CombatEncounter : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class CombatEncounter : MonoBehaviour
 
     GameManager gameManager => GameManager.Instance;
 
+    public TMP_Text goalText;
+
     void Start()
     {
         db = FindFirstObjectByType<CombatDatabase>();
@@ -44,7 +47,12 @@ public class CombatEncounter : MonoBehaviour
         if (encounterType == EncounterType.Elite)
         {
             Vector3 eliteSpawn = arena.transform.GetChild(1).position;
+            goalText.text = "Kill The Elite";
             elite = Instantiate(db.GetElite(), eliteSpawn, Quaternion.identity);
+        }
+        else if (encounterType == EncounterType.KillAll)
+        {
+            goalText.text = "Kill All The Enemies";
         }
     }
 
@@ -54,6 +62,11 @@ public class CombatEncounter : MonoBehaviour
     {
         surviveTimer -= Time.deltaTime;
         spawnTimer -= Time.deltaTime;
+
+        if (encounterType == EncounterType.Survive)
+        {
+            goalText.text = "Survive " + Mathf.Ceil(surviveTimer) + "s";
+        }
 
         if (spawnTimer < 0)
         {
@@ -93,6 +106,7 @@ public class CombatEncounter : MonoBehaviour
         }
 
         waveCounter++;
+        spawnTimer = curParams.enemySpawnTime;
     }
 }
 

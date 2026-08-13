@@ -16,8 +16,6 @@ public class GameManager : MonoBehaviour
     public int bossLevel;
     SettingsManager settingsManager;
 
-    public float startTime;
-
     bool completedTutorial = false;
     public RunData runData;
 
@@ -43,14 +41,14 @@ public class GameManager : MonoBehaviour
     public void Retry()
     {
         OnReset?.Invoke();
-        runData = new RunData(startTime, wp);
+        runData = new RunData(StatsManager.Instance.startStats.maxTime, wp);
         SceneManager.LoadScene("SampleScene");
 
     }
 
     public void RetryTutorial()
     {
-        runData = new RunData(startTime, wp);
+        runData = new RunData(StatsManager.Instance.startStats.maxTime, wp);
         SceneManager.LoadScene("Tutorial");
     }
 
@@ -110,7 +108,7 @@ public class GameManager : MonoBehaviour
     public void Menu()
     {
         OnReset?.Invoke();
-        runData = new RunData(startTime, wp);
+        runData = new RunData(StatsManager.Instance.startStats.maxTime, wp);
 
         SceneManager.LoadScene("Menu");
     }

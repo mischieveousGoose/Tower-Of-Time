@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sword
   damage: 5
   attackCooldown: 0.3
-  icon: {fileID: -488721925442295091, guid: 020227956d0ade743826e9f167311608, type: 3}
+  item: {fileID: 11400000, guid: 45de085b7a2b10d4eae06d6c7067b72a, type: 2}
   dashVelocity: 24
   swordPrefab: {fileID: 6819007161420636171, guid: 6bd0b8a6bb39dc443aeca4bda91eb14e, type: 3}
   attackTime: 0.25

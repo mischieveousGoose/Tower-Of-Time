@@ -2,8 +2,9 @@
 using UnityEngine;
 
 [System.Serializable]
-public class Stats
+public struct Stats
 {
+    public float maxTime;
     public float damage;
     public float speed;
 
@@ -14,15 +15,6 @@ public class Stats
     public float comboSustainTime;
     public float comboMultIncrease;
 
-    public Stats()
-    {
-        damage = 1f;
-        speed = 12f;
-        comboSustainTime = 2f;
-        comboMultIncrease = 0.1f;
-        shopPrices = 1f;
-        enemyTimeReward = 1f;
-    }
 
     public Stats Clone()
     {
@@ -34,6 +26,7 @@ public class Stats
         output.comboSustainTime = comboSustainTime;
         output.shopPrices = shopPrices;
         output.enemyTimeReward = enemyTimeReward;
+        output.maxTime = maxTime;
 
         return output;
     }
@@ -47,5 +40,6 @@ public enum StatType
     ComboSustainTime,
     ComboMultIncrease,
     ShopPrices,
-    EnemyTimeReward
+    EnemyTimeReward,
+    MaxTime
 }

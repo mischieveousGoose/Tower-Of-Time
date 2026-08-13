@@ -6,18 +6,22 @@ public class StatChanger : Item, IOnSetStats
 {
     public List<StatModification> statModifications;
 
-    public void OnSetStats(Dictionary<StatType, float> multipliers)
+    public void OnSetStats(Dictionary<StatType, StatMultiplier> multipliers)
     {
 
         foreach (StatModification mod in statModifications)
         {
-            if (mod.modType == StatModificationType.Addition)
+            if (mod.modType == StatModificationType.Add)
             {
-                multipliers[mod.stat] += mod.mod;
+                multipliers[mod.stat] = new StatMultiplier(multipliers[mod.stat].value + mod.mod, multipliers[mod.stat].mult);
             }
-            else
+            else if (mod.modType == StatModificationType.AddMult)
             {
-                multipliers[mod.stat] *= mod.mod;
+                multipliers[mod.stat] = new StatMultiplier(multipliers[mod.stat].value, multipliers[mod.stat].mult + mod.mod);
+            }
+            else if (mod.modType == StatModificationType.MultMult)
+            {
+                multipliers[mod.stat] = new StatMultiplier(multipliers[mod.stat].value, multipliers[mod.stat].mult * mod.mod);
             }
         }
 
@@ -35,6 +39,7 @@ public struct StatModification
 [System.Serializable]
 public enum StatModificationType
 {
-    Addition,
-    Multiplication
+    Add,
+    AddMult,
+    MultMult
 }

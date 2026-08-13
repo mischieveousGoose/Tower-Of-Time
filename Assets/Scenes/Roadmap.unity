@@ -156,10 +156,12 @@ MonoBehaviour:
   sceneNames:
   - SampleScene
   - Shop
+  - Combat
   - Boss Fight
   nodeTypeChances:
-  - 75
-  - 25
+  - 60
+  - 20
+  - 20
   - 0
   resplitPaths: 0
   minRepaths: 0

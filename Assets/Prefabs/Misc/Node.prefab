@@ -108,6 +108,7 @@ MonoBehaviour:
   icons:
   - {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  - {fileID: -488721925442295091, guid: 020227956d0ade743826e9f167311608, type: 3}
   - {fileID: -9118706651218479546, guid: 1f3b0e35c9110a54398b95f94fb8f00e, type: 3}
 --- !u!120 &7665513356309761535
 LineRenderer:

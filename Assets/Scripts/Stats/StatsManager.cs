@@ -9,10 +9,9 @@ public class StatsManager : MonoBehaviour
     public static StatsManager Instance;
 
     public Stats startStats;
-    [HideInInspector] public Stats stats;
     public Stats curStats;
 
-    Dictionary<StatType, float> statMultipliers;
+    Dictionary<StatType, StatMultiplier> statMultipliers;
 
     private void Awake()
     {
@@ -28,24 +27,23 @@ public class StatsManager : MonoBehaviour
 
     void Start()
     {
-        stats = startStats;
+        curStats = startStats;
     }
 
     void ResetMultipliers()
     {
         if (statMultipliers == null)
-            statMultipliers = new Dictionary<StatType, float>();
+            statMultipliers = new Dictionary<StatType, StatMultiplier>();
 
         foreach (StatType stat in Enum.GetValues(typeof(StatType)))
         {
-            statMultipliers[stat] = 1f;
+            statMultipliers[stat] = new StatMultiplier(GetStat(stat), 1f);
         }
     }
 
     public void ResetStats()
     {
-        stats = startStats;
-        curStats = null;
+        curStats = startStats;
         ResetMultipliers();
     }
 
@@ -70,6 +68,9 @@ public class StatsManager : MonoBehaviour
 
             case StatType.ShopPrices:
                 return curStats.shopPrices;
+
+            case StatType.MaxTime:
+                return curStats.maxTime;
 
             default:
                 return -1;
@@ -102,6 +103,10 @@ public class StatsManager : MonoBehaviour
                 curStats.shopPrices = value;
                 break;
 
+            case StatType.MaxTime:
+                curStats.maxTime = value;
+                break;
+
 
         }
     }
@@ -109,8 +114,7 @@ public class StatsManager : MonoBehaviour
     public void CalculateStats()
     {
         ResetStats();
-        curStats = stats.Clone();
-
+        Debug.Log("Recalculating Stats");
 
         List<IOnSetStats> items = InventoryManager.Instance.GetInterfaceList<IOnSetStats>();
         foreach (IOnSetStats item in items)
@@ -120,14 +124,12 @@ public class StatsManager : MonoBehaviour
 
         foreach (StatType stat in Enum.GetValues(typeof(StatType)))
         {
-            float value = GetStat(stat);
-
-            if (statMultipliers.TryGetValue(stat, out float multiplier))
+            if (statMultipliers.TryGetValue(stat, out StatMultiplier multiplier))
             {
-                SetStat(stat, value * multiplier);
+                SetStat(stat, multiplier.value * multiplier.mult);
             }
         }
-        stats = curStats;
+
     }
 
     void OnEnable()
@@ -148,5 +150,17 @@ public class StatsManager : MonoBehaviour
         {
             CalculateStats();
         }
+    }
+}
+
+public struct StatMultiplier
+{
+    public float value;
+    public float mult;
+
+    public StatMultiplier(float value, float mult)
+    {
+        this.value = value;
+        this.mult = mult;
     }
 }
