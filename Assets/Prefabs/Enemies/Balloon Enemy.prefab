@@ -198,4 +198,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   startHealth: 3
-  timeReward: 3.5
+  timeReward: 1

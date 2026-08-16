@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatChanger
   icon: {fileID: 1801263428120863714, guid: 020227956d0ade743826e9f167311608, type: 3}
   itemName: Coupon
-  cost: 2
+  cost: 15
   disableSell: 0
-  hasMaxCount: 0
-  maxCount: 0
+  hasMaxCount: 1
+  maxCount: 3
   description: -10% Item costs
   statModifications:
   - stat: 4

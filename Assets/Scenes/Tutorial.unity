@@ -411,12 +411,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6dc56ba960b4224bb9ba22d4fb316ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelLoader
-  level: 1
+  wp: {fileID: 0}
   bossLevel: 10
-  startingTimes: []
-  time: 0
-  primaryWeapon: {fileID: 0}
-  secondaryWeapon: {fileID: 0}
 --- !u!4 &89289951
 Transform:
   m_ObjectHideFlags: 0
@@ -933,6 +929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Timer
   startingTime: 60
+  maxTime: 0
   timerText: {fileID: 180916474}
 --- !u!114 &145632699
 MonoBehaviour:
@@ -1070,6 +1067,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ea5e9baf9e758847be01741269cd701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrapplingHook
+  damage: 0
+  attackCooldown: 0
+  item: {fileID: 0}
   grappleLayer:
     serializedVersion: 2
     m_Bits: 264
@@ -2458,6 +2458,55 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &760670658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 760670660}
+  - component: {fileID: 760670659}
+  m_Layer: 0
+  m_Name: RankManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &760670659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760670658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993192f329f0cce4886cf000dc7aeb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RankManager
+  rankUI: {fileID: 0}
+  rankText: {fileID: 0}
+  bonusText: {fileID: 0}
+  timePerRoomForRanks: []
+  timeRewards: []
+--- !u!4 &760670660
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760670658}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 351.13696, y: 241.58424, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &779945619
 GameObject:
   m_ObjectHideFlags: 0
@@ -6087,3 +6136,4 @@ SceneRoots:
   - {fileID: 1083866491}
   - {fileID: 89289951}
   - {fileID: 2131087634}
+  - {fileID: 760670660}

@@ -8,11 +8,13 @@ public class LevelSpawner : MonoBehaviour
 {
     public GameObject startRoom;
     public GameObject endRoom;
-    int levelLength;
+    [HideInInspector] public int levelLength;
     public List<GameObject> rooms;
 
     public int startRooms;
     public int increaseAmount;
+
+
 
     void GenerateLevel()
     {

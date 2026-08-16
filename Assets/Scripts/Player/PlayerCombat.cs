@@ -47,5 +47,15 @@ public class PlayerCombat : MonoBehaviour
         {
             secondaryWeapon.OnUse();
         }
+
+        if (Mouse.current.leftButton.wasReleasedThisFrame && primaryWeapon != null)
+        {
+            primaryWeapon.ReleaseAttack();
+        }
+
+        if (Mouse.current.rightButton.wasReleasedThisFrame && secondaryWeapon != null)
+        {
+            secondaryWeapon.ReleaseAttack();
+        }
     }
 }

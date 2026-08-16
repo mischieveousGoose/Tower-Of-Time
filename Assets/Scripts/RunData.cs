@@ -12,8 +12,11 @@ public class RunData
     public RoadmapNode rootNode;
     public RoadmapNode currentNode;
 
+    public float levelTimer;
+
     public RunData(float startTime, GameObject wp)
     {
+        levelTimer = 0;
         level = 1;
         time = startTime;
 

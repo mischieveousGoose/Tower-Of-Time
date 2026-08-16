@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(LineRenderer))]
-public class GrapplingHook : MonoBehaviour
+[RequireComponent(typeof(LineRenderer))]
+public class GrapplingHook : Weapon
 {
     public LayerMask grappleLayer;
     public float maxDistance = 15f;
@@ -10,36 +10,33 @@ public class GrapplingHook : MonoBehaviour
 
     private Rigidbody2D rb;
     private LineRenderer lr;
-    private Camera cam;
+    private Camera myCamera;
 
     private bool grappling;
     private Vector2 grapplePoint;
 
-    bool hasHook;
+
 
     void Start()
     {
-        hasHook = false;
-        rb = GetComponent<Rigidbody2D>();
+        rb = player.GetComponent<Rigidbody2D>();
         lr = GetComponent<LineRenderer>();
-        cam = Camera.main;
+        myCamera = Camera.main;
 
         lr.enabled = false;
     }
 
-    void Update()
+    public override void ReleaseAttack()
     {
-        if (!hasHook) return;
+        StopGrapple();
+    }
 
-        if (Input.GetMouseButtonDown(1))
-            FireGrapple();
-
-        if (Input.GetMouseButtonUp(1))
-            StopGrapple();
+    protected override void WeaponUpdate()
+    {
 
         if (grappling)
         {
-            lr.SetPosition(0, transform.position);
+            lr.SetPosition(0, player.transform.position);
             lr.SetPosition(1, grapplePoint);
         }
     }
@@ -49,21 +46,21 @@ public class GrapplingHook : MonoBehaviour
         if (!grappling)
             return;
 
-        Vector2 direction = (grapplePoint - (Vector2)transform.position).normalized;
+        Vector2 direction = (grapplePoint - (Vector2)player.transform.position).normalized;
         rb.linearVelocity = direction * pullSpeed;
 
-        if (Vector2.Distance(transform.position, grapplePoint) < stopDistance)
+        if (Vector2.Distance(player.transform.position, grapplePoint) < stopDistance)
         {
             StopGrapple();
         }
     }
 
-    void FireGrapple()
+    protected override void OnAttack()
     {
-        Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mousePos - (Vector2)transform.position).normalized;
+        Vector2 mousePos = myCamera.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mousePos - (Vector2)player.transform.position).normalized;
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxDistance, grappleLayer);
+        RaycastHit2D hit = Physics2D.Raycast(player.transform.position, direction, maxDistance, grappleLayer);
 
         if (hit.collider != null)
         {

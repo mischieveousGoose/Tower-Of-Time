@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300c630a0f4570a408982a0f41f791fc, type: 3}
+  m_Name: GrapplingHook
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponItem
+  icon: {fileID: -5971942374765049077, guid: 020227956d0ade743826e9f167311608, type: 3}
+  itemName: Grappling Hook
+  cost: 18
+  disableSell: 0
+  hasMaxCount: 0
+  maxCount: 0
+  description: Lets you grapple
+  weaponPrefab: {fileID: 932793216667432770, guid: 50bc1cdad05ec704e9c9a29aa0b4d7c1, type: 3}

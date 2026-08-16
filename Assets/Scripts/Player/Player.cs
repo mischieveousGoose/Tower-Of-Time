@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     public float maxTime;
     float timer;
 
+    public Rank rank;
+
     public TMP_Text timerText;
 
 

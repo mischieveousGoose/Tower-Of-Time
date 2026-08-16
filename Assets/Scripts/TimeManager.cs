@@ -11,6 +11,7 @@ public class TimeManager : MonoBehaviour
     public GameObject pauseMenu;
     GameManager gameManager => GameManager.Instance;
 
+    bool beatLevel = false;
     bool inCountdown = false;
     bool hasLost = false;
     bool isPaused;
@@ -23,6 +24,11 @@ public class TimeManager : MonoBehaviour
     DialogueManager dialogueManager;
 
     SFXManager sfxManager;
+
+    public void BeatLevel()
+    {
+        beatLevel = true;
+    }
 
 
 
@@ -40,12 +46,12 @@ public class TimeManager : MonoBehaviour
         bool inDialogue = false;
         if (dialogueManager != null) inDialogue = dialogueManager.startedDialogue;
 
-        if (Input.GetKeyDown(KeyCode.Q) && !hasLost && !inCountdown && !hasWon && !inDialogue)
+        if (Input.GetKeyDown(KeyCode.Q) && !hasLost && !inCountdown && !hasWon && !inDialogue && !beatLevel)
         {
             sfxManager.PlaySFX(3);
             isPaused = !isPaused;
         }
-        if (hasLost || inCountdown || isPaused || hasWon || inDialogue)
+        if (hasLost || inCountdown || isPaused || hasWon || inDialogue || beatLevel)
         {
             Time.timeScale = 0;
         }

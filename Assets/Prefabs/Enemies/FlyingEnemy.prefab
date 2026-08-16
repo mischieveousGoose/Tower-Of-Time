@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   startHealth: 8
-  timeReward: 4.5
+  timeReward: 2.5
 --- !u!114 &4477774608330888380
 MonoBehaviour:
   m_ObjectHideFlags: 0

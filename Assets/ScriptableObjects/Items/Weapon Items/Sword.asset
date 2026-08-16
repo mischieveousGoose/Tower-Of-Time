@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponItem
   icon: {fileID: -488721925442295091, guid: 020227956d0ade743826e9f167311608, type: 3}
   itemName: Sword
-  cost: 2
+  cost: 18
   disableSell: 0
   hasMaxCount: 0
   maxCount: 0

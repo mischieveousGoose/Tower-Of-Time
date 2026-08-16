@@ -32,6 +32,12 @@ public class GameManager : MonoBehaviour
 
     }
 
+    void Update()
+    {
+        if (runData != null)
+            runData.levelTimer += Time.deltaTime;
+    }
+
     void Start()
     {
         settingsManager = FindFirstObjectByType<SettingsManager>();
@@ -58,6 +64,7 @@ public class GameManager : MonoBehaviour
         runData.rootNode = roadmap.rootNode;
         runData.currentNode = roadmap.currentNode;
         runData.level++;
+        runData.levelTimer = 0;
         SceneManager.LoadScene(sceneName);
     }
 
@@ -80,11 +87,11 @@ public class GameManager : MonoBehaviour
         runData.primaryWeapon = shopManager.primaryWeapon;
         runData.secondaryWeapon = shopManager.secondaryWeapon;
 
-
+        Time.timeScale = 1;
         SceneManager.LoadScene("Roadmap");
     }
 
-    public void ContinueFromLevel()
+    public void ContinueFromLevel(float timeReward = 0f)
     {
         if (SceneManager.GetActiveScene().name == "Tutorial")
         {
@@ -101,7 +108,8 @@ public class GameManager : MonoBehaviour
             item.OnRoundEnd(player);
         }
 
-        runData.time = player.GetTime();
+        runData.time = player.GetTime() + timeReward;
+        Time.timeScale = 1;
         SceneManager.LoadScene("Roadmap");
     }
 

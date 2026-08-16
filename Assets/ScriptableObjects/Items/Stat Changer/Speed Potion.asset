@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatChanger
   icon: {fileID: 2029542551908640097, guid: 020227956d0ade743826e9f167311608, type: 3}
   itemName: Speed Potion
-  cost: 15
+  cost: 12
   disableSell: 0
-  hasMaxCount: 0
-  maxCount: 0
+  hasMaxCount: 1
+  maxCount: 3
   description: +10% Speed
   statModifications:
   - stat: 1
     mod: 0.1
-    modType: 0
+    modType: 1

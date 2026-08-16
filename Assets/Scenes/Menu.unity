@@ -1494,7 +1494,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelLoader
   wp: {fileID: 8175336237109619763, guid: 66e393a4ba543d849b352cc27269f816, type: 3}
   bossLevel: 10
-  startTime: 30
 --- !u!4 &426960921
 Transform:
   m_ObjectHideFlags: 0
@@ -3003,25 +3002,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatsManager
   startStats:
+    maxTime: 30
     damage: 1
     speed: 12
-    shopPrices: 1
-    enemyTimeReward: 1
-    comboSustainTime: 2
-    comboMultIncrease: 0.1
-  stats:
-    damage: 0
-    speed: 12
-    shopPrices: 1
-    enemyTimeReward: 1
+    shopPrices: 0.7
+    enemyTimeReward: 0.8
     comboSustainTime: 2
     comboMultIncrease: 0.1
   curStats:
+    maxTime: 0
     damage: 1
     speed: 12
     shopPrices: 1
     enemyTimeReward: 1
-    comboSustainTime: 2
+    comboSustainTime: 1.2
     comboMultIncrease: 0.1
 --- !u!1 &1155593906
 GameObject:

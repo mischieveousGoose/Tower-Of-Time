@@ -47,6 +47,11 @@ public abstract class Weapon : MonoBehaviour
 
     }
 
+    public virtual void ReleaseAttack()
+    {
+
+    }
+
     public Vector2 SnapToDegrees(Vector2 direction, float snapAngle, out float angle)
     {
         angle = 90;

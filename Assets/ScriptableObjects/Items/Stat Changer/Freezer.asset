@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatChanger
   icon: {fileID: 4337684191699249041, guid: 020227956d0ade743826e9f167311608, type: 3}
   itemName: Freezer
-  cost: 30
+  cost: 15
   disableSell: 0
   hasMaxCount: 0
   maxCount: 0
@@ -22,4 +22,4 @@ MonoBehaviour:
   statModifications:
   - stat: 2
     mod: 0.25
-    modType: 0
+    modType: 1

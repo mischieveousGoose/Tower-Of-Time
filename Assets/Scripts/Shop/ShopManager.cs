@@ -86,17 +86,21 @@ public class ShopManager : MonoBehaviour
 
     void RefreshStock()
     {
-        while (stock.Count < 3)
+        stock.Clear();
+
+        if (db == null || db.items == null || db.items.Count == 0)
         {
-            stock.Add(null);
+            Debug.LogError("ItemDatabase is missing or empty.");
+            return;
         }
 
         for (int i = 0; i < 3; i++)
         {
-            stock[i] = PullValidItem();
+            Item item = PullValidItem();
+            if (item != null)
+                stock.Add(item);
         }
     }
-
     int GetItemCount(string itemName)
     {
         int c = 0;
@@ -144,10 +148,21 @@ public class ShopManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            itemIcons[i].sprite = stock[i].icon;
-            itemNameTexts[i].text = stock[i].itemName;
-            itemCostTexts[i].text = RoundFloat(GetItemCost(stock[i])).ToString() + "s";
-            itemDescTexts[i].text = stock[i].description.ToString();
+            if (stock[i] == null)
+            {
+                itemIcons[i].enabled = false;
+                itemNameTexts[i].text = "Out of Stock";
+                itemCostTexts[i].text = "";
+                itemDescTexts[i].text = "";
+            }
+            else
+            {
+                itemIcons[i].enabled = true;
+                itemIcons[i].sprite = stock[i].icon;
+                itemNameTexts[i].text = stock[i].itemName;
+                itemCostTexts[i].text = RoundFloat(GetItemCost(stock[i])).ToString() + "s";
+                itemDescTexts[i].text = stock[i].description.ToString();
+            }
         }
 
         if (primaryWeapon == null) primaryWPIcon.enabled = false;
@@ -180,6 +195,7 @@ public class ShopManager : MonoBehaviour
 
     public void BuyItem(int i)
     {
+        if (stock[i] == null) return;
         if (shopTimer > 0f) return;
         Item buyItem = stock[i];
         if (time < GetItemCost(buyItem)) return;
@@ -205,7 +221,7 @@ public class ShopManager : MonoBehaviour
         }
         StatsManager.Instance.CalculateStats();
 
-        stock[i] = PullValidItem();
+        stock[i] = null;
 
         RenderShop();
     }
@@ -255,7 +271,6 @@ public class ShopManager : MonoBehaviour
     void Update()
     {
         shopTimer -= Time.deltaTime;
-        RenderShop();
     }
 
 }

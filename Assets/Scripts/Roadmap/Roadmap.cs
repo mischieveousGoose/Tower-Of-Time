@@ -24,6 +24,7 @@ public class Roadmap : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;
         if (runData.rootNode == null)
         {
             rootNode = GenerateRoadmap();
