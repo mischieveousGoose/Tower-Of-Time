@@ -3,15 +3,17 @@ using System;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
 {
-
     public GameObject wp;
     public static GameManager Instance;
+
     public event Action OnReset;
+    public Action OnEnemyKilled;
 
     public int bossLevel;
     SettingsManager settingsManager;
@@ -48,14 +50,14 @@ public class GameManager : MonoBehaviour
     {
         OnReset?.Invoke();
         runData = new RunData(StatsManager.Instance.startStats.maxTime, wp);
-        SceneManager.LoadScene("SampleScene");
+        SceneTransitions.Instance.TransitionToScene("SampleScene");
 
     }
 
     public void RetryTutorial()
     {
         runData = new RunData(StatsManager.Instance.startStats.maxTime, wp);
-        SceneManager.LoadScene("Tutorial");
+        SceneTransitions.Instance.TransitionToScene("Tutorial");
     }
 
     public void ContinueFromRoadmap(string sceneName)
@@ -65,7 +67,7 @@ public class GameManager : MonoBehaviour
         runData.currentNode = roadmap.currentNode;
         runData.level++;
         runData.levelTimer = 0;
-        SceneManager.LoadScene(sceneName);
+        SceneTransitions.Instance.TransitionToScene(sceneName);
     }
 
     public void Play()
@@ -76,7 +78,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("Cutscene");
+            SceneTransitions.Instance.TransitionToScene("Cutscene");
         }
     }
 
@@ -88,7 +90,7 @@ public class GameManager : MonoBehaviour
         runData.secondaryWeapon = shopManager.secondaryWeapon;
 
         Time.timeScale = 1;
-        SceneManager.LoadScene("Roadmap");
+        SceneTransitions.Instance.TransitionToScene("Roadmap");
     }
 
     public void ContinueFromLevel(float timeReward = 0f)
@@ -110,7 +112,7 @@ public class GameManager : MonoBehaviour
 
         runData.time = player.GetTime() + timeReward;
         Time.timeScale = 1;
-        SceneManager.LoadScene("Roadmap");
+        SceneTransitions.Instance.TransitionToScene("Roadmap");
     }
 
     public void Menu()
@@ -118,7 +120,7 @@ public class GameManager : MonoBehaviour
         OnReset?.Invoke();
         runData = new RunData(StatsManager.Instance.startStats.maxTime, wp);
 
-        SceneManager.LoadScene("Menu");
+        SceneTransitions.Instance.TransitionToScene("Menu");
     }
 
 

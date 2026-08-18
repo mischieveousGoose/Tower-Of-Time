@@ -9,18 +9,28 @@ public class RankManager : MonoBehaviour
     public TMP_Text rankText;
     public TMP_Text bonusText;
 
-    public float[] timePerRoomForRanks;
+    public float[] levelThresholds;
     public float[] timeRewards;
+
+    [Header("Combat Encounter")]
+    public float[] survivalThresholds;
+    public float[] eliteThresholds;
+    public float[] killAllThresholds;
 
     float timeReward;
 
     public void Continue()
     {
-        if (SceneManager.GetActiveScene().name == "Tutorial" || SceneManager.GetActiveScene().name == "Combat") GameManager.Instance.ContinueFromLevel();
+        string sceneName = SceneManager.GetActiveScene().name;
+        if (sceneName == "Tutorial")
+        {
+            GameManager.Instance.ContinueFromLevel();
+            return;
+        }
 
         FindFirstObjectByType<TimeManager>().BeatLevel();
 
-        Rank rank = CalculateRank();
+        Rank rank = sceneName == "Combat" ? CalculateCombatRank() : CalculateLevelRank();
         rankText.text = rank.HumanName();
         timeReward = timeRewards[(int)rank];
 
@@ -29,8 +39,6 @@ public class RankManager : MonoBehaviour
 
 
         rankUI.SetActive(true);
-
-
     }
 
     public void FinishLevel()
@@ -44,13 +52,50 @@ public class RankManager : MonoBehaviour
             rankUI.SetActive(false);
     }
 
-    Rank CalculateRank()
+    Rank CalculateLevelRank()
     {
         float time = GameManager.Instance.runData.levelTimer / FindFirstObjectByType<LevelSpawner>().levelLength;
-        for (int i = 0; i < timePerRoomForRanks.Length; i++)
+        for (int i = 0; i < levelThresholds.Length; i++)
         {
-            if (time < timePerRoomForRanks[i]) return (Rank)i;
+            if (time < levelThresholds[i]) return (Rank)i;
         }
+        return Rank.F;
+
+    }
+
+    Rank CalculateCombatRank()
+    {
+        CombatEncounter combatEncounter = FindFirstObjectByType<CombatEncounter>();
+        EncounterType type = combatEncounter.encounterType;
+
+        // Get whether rank will be scored off time or kills based on encounter type
+        float scoringVal = type == EncounterType.Survive ? combatEncounter.kills : combatEncounter.timer;
+
+        // get the correct rank thresholds depending on encounter type
+        float[] scoringArray = type switch
+        {
+            EncounterType.KillAll => killAllThresholds,
+            EncounterType.Elite => eliteThresholds,
+            EncounterType.Survive => survivalThresholds
+        };
+
+        // Check if its something where you want to have a low score like time
+        bool isLowScorer = type != EncounterType.Survive;
+
+        if (isLowScorer)
+            for (int i = 0; i < scoringArray.Length; i++)
+            {
+                if (scoringVal < scoringArray[i])
+                    return (Rank)i;
+            }
+
+        else
+            for (int i = scoringArray.Length - 1; i >= 0; i--)
+            {
+                if (scoringVal > scoringArray[i])
+                    return (Rank)i;
+            }
+
         return Rank.F;
 
     }

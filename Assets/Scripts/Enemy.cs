@@ -54,6 +54,7 @@ public class Enemy : MonoBehaviour, Attackable
             mult *= StatsManager.Instance.GetStat(StatType.EnemyTimeReward);
             FindFirstObjectByType<Player>().AddTime(timeReward * mult);
             comboManager.GainPopup(mult * timeReward, transform.position);
+            GameManager.Instance.OnEnemyKilled?.Invoke();
             Destroy(gameObject);
         }
     }

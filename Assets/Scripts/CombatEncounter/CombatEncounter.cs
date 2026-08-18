@@ -10,14 +10,18 @@ public class CombatEncounter : MonoBehaviour
 
     CombatDatabase db;
     List<Vector3> spawnPositions;
+    RankManager rankManager;
 
     float spawnTimer;
     int waveCounter = 0;
     float surviveTimer;
 
+    [HideInInspector] public float timer = 0f;
+    [HideInInspector] public float kills = 0f;
+
     public List<EncounterParams> encounterParams;
     EncounterParams curParams;
-    EncounterType encounterType;
+    [HideInInspector] public EncounterType encounterType;
 
     public Transform enemyParent;
     GameObject elite;
@@ -28,6 +32,7 @@ public class CombatEncounter : MonoBehaviour
 
     void Start()
     {
+        rankManager = FindFirstObjectByType<RankManager>();
         db = FindFirstObjectByType<CombatDatabase>();
 
         encounterType = db.GetEncounterType();
@@ -60,6 +65,7 @@ public class CombatEncounter : MonoBehaviour
 
     void Update()
     {
+        timer += Time.deltaTime;
         surviveTimer -= Time.deltaTime;
         spawnTimer -= Time.deltaTime;
 
@@ -77,15 +83,15 @@ public class CombatEncounter : MonoBehaviour
         switch (encounterType)
         {
             case EncounterType.KillAll:
-                if (waveCounter >= curParams.totalEnemyWaves && enemyParent.childCount == 0) gameManager.ContinueFromLevel();
+                if (waveCounter >= curParams.totalEnemyWaves && enemyParent.childCount == 0) rankManager.Continue();
                 break;
 
             case EncounterType.Survive:
-                if (surviveTimer < 0f) gameManager.ContinueFromLevel();
+                if (surviveTimer < 0f) rankManager.Continue();
                 break;
 
             case EncounterType.Elite:
-                if (elite == null) gameManager.ContinueFromLevel();
+                if (elite == null) rankManager.Continue();
                 break;
 
         }
@@ -107,6 +113,21 @@ public class CombatEncounter : MonoBehaviour
 
         waveCounter++;
         spawnTimer = curParams.enemySpawnTime;
+    }
+
+    private void OnEnable()
+    {
+        gameManager.OnEnemyKilled += OnKill;
+    }
+
+    private void OnDisable()
+    {
+        gameManager.OnEnemyKilled -= OnKill;
+    }
+
+    private void OnKill()
+    {
+        kills++;
     }
 }
 
