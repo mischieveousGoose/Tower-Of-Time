@@ -15,9 +15,10 @@ public class PlayerMovement : MonoBehaviour
     public float acceleration;
     public float decceleration;
 
+    public ParticleSystem walkParticles;
+    bool isPlayingWalkParticles = false;
 
-
-    SpriteRenderer sr;
+    public SpriteRenderer sr;
 
     public float jumpCutMultiplier;
 
@@ -30,17 +31,12 @@ public class PlayerMovement : MonoBehaviour
     float jumpCooldownCounter;
 
     [Header("Extra Jumps")]
-    private int extraJumps = 0;
-    int extraJumpsRemaining;
-
-    PlayerCombat attacker;
-
-    bool isFlipped = false;
-    bool canFlip;
-
     float frictionDisabledTime;
 
     SFXManager sfxManager;
+    bool isGrounded;
+
+
 
     void Start()
     {
@@ -48,44 +44,71 @@ public class PlayerMovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        attacker = GetComponent<PlayerCombat>();
 
-        extraJumps = 0;
         moveSpeed = StatsManager.Instance.GetStat(StatType.Speed);
-        extraJumpsRemaining = extraJumps;
+    }
 
-        canFlip = false;
+    void HandleFlip()
+    {
+        if (InputManager.Instance.HorizontalInput != 0)
+        {
+            bool isFacingRight = InputManager.Instance.HorizontalInput > 0;
+            sr.flipX = !isFacingRight;
+            walkParticles.transform.rotation = Quaternion.Euler(0, 0, isFacingRight ? 180 : 0);
+        }
+    }
 
+    void HandleWalkParticles()
+    {
+        if (isGrounded && !isPlayingWalkParticles && InputManager.Instance.HorizontalInput != 0)
+        {
+            walkParticles.Play();
+            isPlayingWalkParticles = true;
+        }
 
+        if ((!isGrounded || InputManager.Instance.HorizontalInput == 0) && isPlayingWalkParticles)
+        {
+            walkParticles.Stop();
+            isPlayingWalkParticles = false;
+        }
+    }
+
+    void HandleJump()
+    {
+
+        if (isGrounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+
+        if (!isGrounded && rb.linearVelocity.y > 0f && InputManager.Instance.JumpInput && frictionDisabledTime < 0f)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+        }
+
+        if (InputManager.Instance.JumpInput)
+        {
+            jumpBufferCounter = jumpBuffer;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
     }
 
     void Update()
     {
+        isGrounded = IsGrounded();
         frictionDisabledTime -= Time.deltaTime;
-        if (Input.GetAxisRaw("Horizontal") != 0)
-        {
-            sr.flipX = Input.GetAxisRaw("Horizontal") < -0.1f;
-        }
+        HandleFlip();
+        HandleWalkParticles();
+        HandleJump();
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canFlip)
-        {
-            isFlipped = !isFlipped;
-        }
-
-        if (isFlipped)
-        {
-            sr.flipY = true;
-            rb.gravityScale = Mathf.Abs(rb.gravityScale) * -1;
-            groundCheck.localPosition = new Vector3(groundCheck.localPosition.x, Mathf.Abs(groundCheck.localPosition.y), 0f);
-        }
-        else
-        {
-            sr.flipY = false;
-            rb.gravityScale = Mathf.Abs(rb.gravityScale);
-            groundCheck.localPosition = new Vector3(groundCheck.localPosition.x, Mathf.Abs(groundCheck.localPosition.y) * -1, 0f);
-        }
-
-        Collider2D movingPlat = isOnMovingPlatform();
+        Collider2D movingPlat = IsOnMovingPlatform();
 
         if (movingPlat != null)
         {
@@ -97,43 +120,14 @@ public class PlayerMovement : MonoBehaviour
         }
         jumpCooldownCounter -= Time.deltaTime;
 
-        if (isGrounded())
-        {
-            coyoteTimeCounter = coyoteTime;
-            extraJumpsRemaining = extraJumps; // refill extra jumps whenever grounded
-        }
-        else
-        {
-            coyoteTimeCounter -= Time.deltaTime;
-        }
 
-        if (!isGrounded() && rb.linearVelocity.y > 0f && Input.GetButtonUp("Jump") && frictionDisabledTime < 0f)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
-        }
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            jumpBufferCounter = jumpBuffer;
-        }
-        else
-        {
-            jumpBufferCounter -= Time.deltaTime;
-        }
 
-        bool canGroundJump = coyoteTimeCounter > 0f;
-        bool canAirJump = !canGroundJump && extraJumpsRemaining > 0;
-
-        if ((canGroundJump || canAirJump) && jumpBufferCounter > 0f && jumpCooldownCounter < 0f)
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f && jumpCooldownCounter < 0f)
         {
             jumpCooldownCounter = jumpBuffer + 0.1f;
-            jumpBufferCounter = 0f; // consume the buffered input so it can't trigger twice
-
-            if (!canGroundJump)
-            {
-                extraJumpsRemaining--;
-                coyoteTimeCounter = 0f; // prevent a leftover coyote frame from also counting
-            }
+            jumpBufferCounter = 0f;
+            coyoteTimeCounter = 0f;
 
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpHeight);
             sfxManager.PlaySFX(1);
@@ -163,7 +157,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(movement * Vector2.right);
     }
 
-    public bool isGrounded()
+    public bool IsGrounded()
     {
         return Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, groundLayer);
     }
@@ -182,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    Collider2D isOnMovingPlatform()
+    Collider2D IsOnMovingPlatform()
     {
         return Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, movingPlatform);
     }

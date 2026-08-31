@@ -181,6 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   startHealth: 3
   timeReward: 2
+  deathParticles: {fileID: 194062, guid: 8c27aeead6d968e4ba986702d6b84335, type: 3}
 --- !u!114 &3554254163433918899
 MonoBehaviour:
   m_ObjectHideFlags: 0

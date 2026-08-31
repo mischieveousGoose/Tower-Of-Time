@@ -13,6 +13,10 @@ public class Enemy : MonoBehaviour, Attackable
     SpriteRenderer sr;
     SettingsManager settingsManager;
 
+    public GameObject deathParticles;
+
+
+
     void Start()
     {
         settingsManager = FindFirstObjectByType<SettingsManager>();
@@ -53,8 +57,18 @@ public class Enemy : MonoBehaviour, Attackable
             mult *= comboManager.GetCombo(transform.position);
             mult *= StatsManager.Instance.GetStat(StatType.EnemyTimeReward);
             FindFirstObjectByType<Player>().AddTime(timeReward * mult);
+
+            FindFirstObjectByType<CameraController>().ScreenShake(10f, 0.2f);
+
             comboManager.GainPopup(mult * timeReward, transform.position);
             GameManager.Instance.OnEnemyKilled?.Invoke();
+
+            if (deathParticles != null)
+            {
+                float angle = FindFirstObjectByType<PlayerCombat>().GetMouseAngle();
+                Instantiate(deathParticles, transform.position, Quaternion.Euler(0, 0, angle));
+            }
+
             Destroy(gameObject);
         }
     }

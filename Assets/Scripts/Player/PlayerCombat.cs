@@ -15,6 +15,16 @@ public class PlayerCombat : MonoBehaviour
     public Image primaryIcon;
     public Image secondaryIcon;
 
+    public float GetMouseAngle()
+    {
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Vector2 playerPos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector2 direction = (mousePos - playerPos);
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        return angle;
+    }
+
     void Start()
     {
         primaryIcon.enabled = false;
@@ -38,22 +48,20 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame && primaryWeapon != null)
+        if (InputManager.Instance.PrimaryWeaponPerformed && primaryWeapon != null)
         {
             primaryWeapon.OnUse();
         }
-
-        if (Mouse.current.rightButton.wasPressedThisFrame && secondaryWeapon != null)
-        {
-            secondaryWeapon.OnUse();
-        }
-
-        if (Mouse.current.leftButton.wasReleasedThisFrame && primaryWeapon != null)
+        else if (InputManager.Instance.PrimaryWeaponReleased && primaryWeapon != null)
         {
             primaryWeapon.ReleaseAttack();
         }
 
-        if (Mouse.current.rightButton.wasReleasedThisFrame && secondaryWeapon != null)
+        if (InputManager.Instance.SecondaryWeaponPerformed && secondaryWeapon != null)
+        {
+            secondaryWeapon.OnUse();
+        }
+        else if (InputManager.Instance.SecondaryWeaponReleased && secondaryWeapon != null)
         {
             secondaryWeapon.ReleaseAttack();
         }
