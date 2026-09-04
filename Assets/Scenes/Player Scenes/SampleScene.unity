@@ -743,6 +743,7 @@ MonoBehaviour:
   decceleration: 6
   walkParticles: {fileID: 425587660}
   sr: {fileID: 1224931650}
+  animator: {fileID: 1224931649}
   jumpCutMultiplier: 0.6
   coyoteTime: 0.15
   jumpBuffer: 0.15

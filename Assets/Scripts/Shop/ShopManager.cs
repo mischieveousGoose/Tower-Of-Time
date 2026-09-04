@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class ShopManager : MonoBehaviour
 {
     SFXManager sfxManager;
-    List<Item> stock = new List<Item>();
+    [HideInInspector] public List<Item> stock = new List<Item>();
     ItemDatabase db;
     public float time;
 
@@ -22,15 +22,12 @@ public class ShopManager : MonoBehaviour
 
     [Header("UI")]
     public List<Image> itemIcons;
-    public List<TMP_Text> itemNameTexts;
-    public List<TMP_Text> itemDescTexts;
     public List<TMP_Text> itemCostTexts;
 
     public Image primaryWPIcon;
     public Image secondaryWPIcon;
 
     public TMP_Text moneyText;
-    public TMP_Text nextLevelText;
     public GameObject inventoryPrefab;
     public Transform inventoryParent;
     SettingsManager settingsManager;
@@ -50,15 +47,6 @@ public class ShopManager : MonoBehaviour
 
         primaryWeapon = runData.primaryWeapon;
         secondaryWeapon = runData.secondaryWeapon;
-
-        if (runData.level + 1 == gameManager.bossLevel)
-        {
-            nextLevelText.text = "-> Final Floor";
-        }
-        else
-        {
-            nextLevelText.text = "-> Floor " + (runData.level + 1).ToString() + "/10";
-        }
 
         RefreshStock();
         RenderShop();
@@ -151,17 +139,13 @@ public class ShopManager : MonoBehaviour
             if (stock[i] == null)
             {
                 itemIcons[i].enabled = false;
-                itemNameTexts[i].text = "Out of Stock";
                 itemCostTexts[i].text = "";
-                itemDescTexts[i].text = "";
             }
             else
             {
                 itemIcons[i].enabled = true;
                 itemIcons[i].sprite = stock[i].icon;
-                itemNameTexts[i].text = stock[i].itemName;
                 itemCostTexts[i].text = RoundFloat(GetItemCost(stock[i])).ToString() + "s";
-                itemDescTexts[i].text = stock[i].description.ToString();
             }
         }
 
@@ -245,9 +229,9 @@ public class ShopManager : MonoBehaviour
         else if (secondaryWeapon == null) secondaryWeapon = weapon;
     }
 
-    public void SellWeapon(bool isPrimary)
+    public void SellWeapon(int index)
     {
-        if (isPrimary)
+        if (index == 0)
         {
             if (primaryWeapon == null) return;
             time += primaryWeapon.GetComponent<Weapon>().item.cost / 2;

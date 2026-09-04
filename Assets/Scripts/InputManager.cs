@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
     public float VerticalInput { get; private set; }
     public Vector2 MoveVector { get; private set; }
     public bool JumpInput { get; private set; }
+    public bool JumpInputReleased { get; private set; }
 
     public bool PrimaryWeaponPerformed { get; private set; }
     public bool SecondaryWeaponPerformed { get; private set; }
@@ -24,6 +25,11 @@ public class InputManager : MonoBehaviour
 
     void OnEnable()
     {
+        if (Instance != null && Instance != this)
+        {
+            return;
+        }
+
         inputActions.Enable();
         moveAction = inputActions.FindAction("Move");
         jumpAction = inputActions.FindAction("Jump");
@@ -33,7 +39,10 @@ public class InputManager : MonoBehaviour
 
     void OnDisable()
     {
-        inputActions.Disable();
+        if (Instance == this)
+        {
+            inputActions.Disable();
+        }
     }
 
 
@@ -57,6 +66,7 @@ public class InputManager : MonoBehaviour
         VerticalInput = MoveVector.y;
 
         JumpInput = jumpAction.WasPerformedThisFrame();
+	JumpInputReleased = jumpAction.WasReleasedThisFrame();
 
         PrimaryWeaponPerformed = primaryWeaponAction.WasPerformedThisFrame();
         SecondaryWeaponPerformed = secondaryWeaponAction.WasPerformedThisFrame();

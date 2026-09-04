@@ -14,6 +14,8 @@ public class RunData
 
     public float levelTimer;
 
+    public Character selectedCharacter;
+
     public RunData(float startTime, GameObject wp)
     {
         levelTimer = 0;
@@ -25,5 +27,7 @@ public class RunData
 
         rootNode = null;
         currentNode = null;
+
+        selectedCharacter = null;
     }
 }

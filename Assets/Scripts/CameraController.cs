@@ -48,4 +48,5 @@ public class CameraController : MonoBehaviour
         yield return new WaitForSeconds(duration);
         noise.AmplitudeGain = 0f;
     }
+    
 }

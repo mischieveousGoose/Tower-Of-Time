@@ -43,8 +43,16 @@ public class StatsManager : MonoBehaviour
 
     public void ResetStats()
     {
+	if(GameManager.Instance.character != null) 
+	    curStats = GameManager.Instance.character.stats;
+	else
         curStats = startStats;
         ResetMultipliers();
+    }
+
+    public void SetStats(Stats stats)
+    {
+	this.startStats = stats;
     }
 
     public float GetStat(StatType type)

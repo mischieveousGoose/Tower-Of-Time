@@ -1,9 +1,7 @@
-
 using System;
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 
@@ -20,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     bool completedTutorial = false;
     public RunData runData;
+
+    public Character character;
 
     private void Awake()
     {
@@ -43,6 +43,19 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         settingsManager = FindFirstObjectByType<SettingsManager>();
+    }
+
+    public void ChooseCharacter(Character character)
+    {
+	this.character = character;
+	if(completedTutorial)
+	{
+	    Retry();
+	}
+	else
+	{
+	    RetryTutorial();
+	}
     }
 
 
@@ -72,14 +85,7 @@ public class GameManager : MonoBehaviour
 
     public void Play()
     {
-        if (completedTutorial)
-        {
-            Retry();
-        }
-        else
-        {
-            SceneTransitions.Instance.TransitionToScene("Cutscene");
-        }
+        SceneTransitions.Instance.TransitionToScene("CharacterSelect");
     }
 
     public void ContinueFromShop()

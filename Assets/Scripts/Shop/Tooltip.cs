@@ -32,18 +32,26 @@ public class Tooltip : MonoBehaviour
 
         if (hover.name == "WPIcon")
         {
-            WeaponTooltip(hover);
+            int index = hover.transform.parent.GetSiblingIndex();
+            Item item = (index == 0 ? shopManager.primaryWeapon : shopManager.secondaryWeapon).GetComponent<Weapon>().item;
+            ItemTooltip(item, index);
+        }
+        else if (hover.name == "ShopIcon")
+        {
+            Item item = shopManager.stock[hover.transform.parent.GetSiblingIndex()];
+            int sellIndex = hover.transform.parent.GetSiblingIndex();
+            ItemTooltip(item, sellIndex);
         }
         else
         {
-            ItemTooltip(hover);
+            Item item = InventoryManager.Instance.inventory[hover.transform.GetSiblingIndex()];
+            int sellIndex = hover.transform.GetSiblingIndex();
+            ItemTooltip(item, sellIndex);
         }
     }
 
-    void ItemTooltip(GameObject hover)
+    void ItemTooltip(Item hoverItem, int sellIndex)
     {
-        Item hoverItem = InventoryManager.Instance.inventory[hover.transform.GetSiblingIndex()];
-
         ttHead.text = hoverItem.itemName;
         ttBody.text = hoverItem.description;
         if (hoverItem.disableSell)
@@ -58,33 +66,11 @@ public class Tooltip : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1) && !hoverItem.disableSell)
         {
-            shopManager.SellItem(hover.transform.GetSiblingIndex());
+            shopManager.SellItem(sellIndex);
         }
     }
 
-    void WeaponTooltip(GameObject hover)
-    {
-        bool isPrimary = hover.transform.parent.GetSiblingIndex() == 0;
-        Item item = (isPrimary ? shopManager.primaryWeapon : shopManager.secondaryWeapon).GetComponent<Weapon>().item;
 
-
-        ttHead.text = item.itemName;
-        ttBody.text = item.description;
-        if (item.disableSell)
-        {
-            ttSellText.gameObject.SetActive(false);
-        }
-        else
-        {
-            ttSellText.gameObject.SetActive(true);
-            ttSellText.text = "Right click to sell for " + item.cost / 2 + "s.";
-        }
-
-        if (Input.GetMouseButtonDown(1) && !item.disableSell)
-        {
-            shopManager.SellWeapon(isPrimary);
-        }
-    }
 
     GameObject GetUIObjectUnderMouse()
     {

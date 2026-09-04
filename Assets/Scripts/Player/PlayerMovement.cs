@@ -3,35 +3,35 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed;
+    [SerializeField] private float moveSpeed;
     Rigidbody2D rb;
-    public Transform groundCheck;
-    public Vector2 groundCheckSize;
-    public LayerMask groundLayer;
-    public LayerMask movingPlatform;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private Vector2 groundCheckSize;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask movingPlatform;
 
-    public float maxVel;
-    public float jumpHeight;
-    public float acceleration;
-    public float decceleration;
+    [SerializeField] private float maxVel;
+    [SerializeField] private float jumpHeight;
+    [SerializeField] private float acceleration;
+    [SerializeField] private float decceleration;
 
-    public ParticleSystem walkParticles;
-    bool isPlayingWalkParticles = false;
+    [SerializeField] private ParticleSystem walkParticles;
+    private bool isPlayingWalkParticles = false;
 
-    public SpriteRenderer sr;
+    [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private Animator animator;
 
-    public float jumpCutMultiplier;
+    [SerializeField] private float jumpCutMultiplier;
 
     [Header("Helpers")]
 
-    public float coyoteTime;
-    public float jumpBuffer;
-    float coyoteTimeCounter;
-    float jumpBufferCounter;
-    float jumpCooldownCounter;
+    [SerializeField] private float coyoteTime;
+    [SerializeField] private float jumpBuffer;
+    float coyoteTimeCounter = -1;
+    float jumpBufferCounter = -1;
+    float jumpCooldownCounter = -1;
 
-    [Header("Extra Jumps")]
-    float frictionDisabledTime;
+     float frictionDisabledTime;
 
     SFXManager sfxManager;
     bool isGrounded;
@@ -41,11 +41,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         sfxManager = FindFirstObjectByType<SFXManager>();
-
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
-
         moveSpeed = StatsManager.Instance.GetStat(StatType.Speed);
+	sr.sprite = GameManager.Instance.character.sprite;
     }
 
     void HandleFlip()
@@ -73,10 +71,30 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void HandleAnimations()
+    {
+        /*
+        State 0 - Idle
+        State 1 - Walking
+        */
+
+        int state = 0;
+        if (InputManager.Instance.HorizontalInput != 0 && isGrounded)
+        {
+            state = 1;
+        }
+        else
+        {
+            state = 0;
+        }
+
+        animator.SetInteger("State", state);
+    }
+
     void HandleJump()
     {
 
-        if (isGrounded)
+        if (IsGrounded())
         {
             coyoteTimeCounter = coyoteTime;
         }
@@ -85,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        if (!isGrounded && rb.linearVelocity.y > 0f && InputManager.Instance.JumpInput && frictionDisabledTime < 0f)
+        if (!IsGrounded() && rb.linearVelocity.y > 0f && InputManager.Instance.JumpInputReleased && frictionDisabledTime < 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
         }
@@ -98,6 +116,17 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpBufferCounter -= Time.deltaTime;
         }
+
+	  if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f && jumpCooldownCounter < 0f)
+        {
+            jumpCooldownCounter = jumpBuffer + 0.1f;
+            jumpBufferCounter = 0f;
+            coyoteTimeCounter = 0f;
+
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpHeight);
+            sfxManager.PlaySFX(1);
+        }
+
     }
 
     void Update()
@@ -107,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
         HandleFlip();
         HandleWalkParticles();
         HandleJump();
+        HandleAnimations();
 
         Collider2D movingPlat = IsOnMovingPlatform();
 
@@ -123,16 +153,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f && jumpCooldownCounter < 0f)
-        {
-            jumpCooldownCounter = jumpBuffer + 0.1f;
-            jumpBufferCounter = 0f;
-            coyoteTimeCounter = 0f;
-
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpHeight);
-            sfxManager.PlaySFX(1);
-        }
-
+     
         if (frictionDisabledTime < 0f && rb.linearVelocity.magnitude > maxVel)
         {
             rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxVel);
