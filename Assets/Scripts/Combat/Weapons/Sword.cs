@@ -17,7 +17,7 @@ public class Sword : Weapon
     protected override void WeaponUpdate()
     {
         regainDashCooldown -= Time.deltaTime;
-        if (movement.IsGrounded() && regainDashCooldown < 0f)
+        if ((movement.IsGrounded() || movement.isWallSliding) && regainDashCooldown < 0f)
         {
             canDash = true;
         }

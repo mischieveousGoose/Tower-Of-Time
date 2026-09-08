@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 
 public class Enemy : MonoBehaviour, Attackable
@@ -14,6 +15,8 @@ public class Enemy : MonoBehaviour, Attackable
     SettingsManager settingsManager;
 
     public GameObject deathParticles;
+
+    public event Action onDeath;
 
 
 
@@ -59,6 +62,7 @@ public class Enemy : MonoBehaviour, Attackable
             FindFirstObjectByType<Player>().AddTime(timeReward * mult);
 
             FindFirstObjectByType<CameraController>().ScreenShake(10f, 0.2f);
+            onDeath?.Invoke();
 
             comboManager.GainPopup(mult * timeReward, transform.position);
             GameManager.Instance.OnEnemyKilled?.Invoke();

@@ -39,8 +39,7 @@ public class Tooltip : MonoBehaviour
         else if (hover.name == "ShopIcon")
         {
             Item item = shopManager.stock[hover.transform.parent.GetSiblingIndex()];
-            int sellIndex = hover.transform.parent.GetSiblingIndex();
-            ItemTooltip(item, sellIndex);
+            ItemTooltip(item, -1);
         }
         else
         {
@@ -54,7 +53,7 @@ public class Tooltip : MonoBehaviour
     {
         ttHead.text = hoverItem.itemName;
         ttBody.text = hoverItem.description;
-        if (hoverItem.disableSell)
+        if (hoverItem.disableSell || sellIndex == -1)
         {
             ttSellText.gameObject.SetActive(false);
         }
@@ -64,7 +63,7 @@ public class Tooltip : MonoBehaviour
             ttSellText.text = "Right click to sell for " + hoverItem.cost / 2 + "s.";
         }
 
-        if (Input.GetMouseButtonDown(1) && !hoverItem.disableSell)
+        if (Input.GetMouseButtonDown(1) && !hoverItem.disableSell && sellIndex != -1)
         {
             shopManager.SellItem(sellIndex);
         }

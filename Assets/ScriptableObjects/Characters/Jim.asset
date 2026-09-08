@@ -22,7 +22,7 @@ MonoBehaviour:
   stats:
     maxTime: 30
     damage: 1
-    speed: 40
+    speed: 12
     shopPrices: 0.7
     enemyTimeReward: 0.9
     comboSustainTime: 2

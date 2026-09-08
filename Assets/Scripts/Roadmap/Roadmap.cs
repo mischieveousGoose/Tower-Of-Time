@@ -11,7 +11,6 @@ public class Roadmap : MonoBehaviour
     public GameObject nodeObject;
     public Transform nodeParent;
 
-    public string[] sceneNames;
     public float[] nodeTypeChances;
 
     public RoadmapNode rootNode;
@@ -99,7 +98,7 @@ public class Roadmap : MonoBehaviour
         if (currentNode.nextNodes.Contains(node))
         {
             currentNode = node;
-            GameManager.Instance.ContinueFromRoadmap(sceneNames[(int)node.nodeType]);
+            GameManager.Instance.ContinueFromRoadmap(node.nodeType);
         }
     }
 

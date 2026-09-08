@@ -31,11 +31,24 @@ public class PlayerMovement : MonoBehaviour
     float jumpBufferCounter = -1;
     float jumpCooldownCounter = -1;
 
-     float frictionDisabledTime;
+    float frictionDisabledTime;
 
     SFXManager sfxManager;
     bool isGrounded;
 
+    [Header("Wall Slide")]
+    public Transform leftWallCheck;
+    public Transform rightWallCheck;
+    public Vector2 wallCheckSize;
+    public float wallSlideSpeed;
+    float wallSlideDir = 0;
+
+    [Header("Wall Jump")]
+    public Vector2 wallJumpForce;
+    public float wallJumpForgiveness;
+    float wallForgivenessCounter;
+
+    public bool isWallSliding { get { return wallSlideDir != 0; } }
 
 
     void Start()
@@ -43,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
         sfxManager = FindFirstObjectByType<SFXManager>();
         rb = GetComponent<Rigidbody2D>();
         moveSpeed = StatsManager.Instance.GetStat(StatType.Speed);
-	sr.sprite = GameManager.Instance.character.sprite;
+        sr.sprite = GameManager.Instance.character.sprite;
     }
 
     void HandleFlip()
@@ -94,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
     void HandleJump()
     {
 
-        if (IsGrounded())
+        if (isGrounded)
         {
             coyoteTimeCounter = coyoteTime;
         }
@@ -103,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        if (!IsGrounded() && rb.linearVelocity.y > 0f && InputManager.Instance.JumpInputReleased && frictionDisabledTime < 0f)
+        if (!isGrounded && rb.linearVelocity.y > 0f && InputManager.Instance.JumpInputReleased && frictionDisabledTime < 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
         }
@@ -117,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
             jumpBufferCounter -= Time.deltaTime;
         }
 
-	  if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f && jumpCooldownCounter < 0f)
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f && jumpCooldownCounter < 0f)
         {
             jumpCooldownCounter = jumpBuffer + 0.1f;
             jumpBufferCounter = 0f;
@@ -129,6 +142,46 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    void HandleWallSlide()
+    {
+        bool touchingLeftWall = Physics2D.OverlapBox(leftWallCheck.position, wallCheckSize, 0f, groundLayer);
+        bool touchingRightWall = Physics2D.OverlapBox(rightWallCheck.position, wallCheckSize, 0f, groundLayer);
+
+        if (touchingLeftWall && InputManager.Instance.HorizontalInput < 0)
+        {
+            wallSlideDir = -1;
+        }
+        else if (touchingRightWall && InputManager.Instance.HorizontalInput > 0)
+        {
+            wallSlideDir = 1;
+        }
+        else
+        {
+            wallSlideDir = 0;
+        }
+
+        if (wallSlideDir != 0 && !isGrounded && rb.linearVelocity.y < 0f)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -wallSlideSpeed, float.MaxValue));
+            wallForgivenessCounter = wallJumpForgiveness;
+        }
+        else
+        {
+            wallForgivenessCounter -= Time.deltaTime;
+        }
+    }
+
+    void HandleWallJump()
+    {
+        if (wallForgivenessCounter > 0f && InputManager.Instance.JumpInput)
+        {
+
+            rb.linearVelocity = new Vector2(-wallSlideDir * wallJumpForce.x, wallJumpForce.y);
+            wallForgivenessCounter = 0f;
+            sfxManager.PlaySFX(1);
+        }
+    }
+
     void Update()
     {
         isGrounded = IsGrounded();
@@ -137,7 +190,8 @@ public class PlayerMovement : MonoBehaviour
         HandleWalkParticles();
         HandleJump();
         HandleAnimations();
-
+        HandleWallSlide();
+        HandleWallJump();
         Collider2D movingPlat = IsOnMovingPlatform();
 
         if (movingPlat != null)
@@ -153,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-     
+
         if (frictionDisabledTime < 0f && rb.linearVelocity.magnitude > maxVel)
         {
             rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxVel);

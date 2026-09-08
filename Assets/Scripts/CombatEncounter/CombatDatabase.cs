@@ -25,6 +25,7 @@ public class CombatDatabase : MonoBehaviour
 
     public EncounterType GetEncounterType()
     {
+        return EncounterType.KillAll;
         int length = Enum.GetValues(typeof(EncounterType)).Length;
         return (EncounterType)UnityEngine.Random.Range(0, length);
     }

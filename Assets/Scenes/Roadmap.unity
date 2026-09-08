@@ -159,9 +159,9 @@ MonoBehaviour:
   - Combat
   - Boss Fight
   nodeTypeChances:
-  - 0
-  - 100
-  - 0
+  - 50
+  - 30
+  - 20
   - 0
   resplitPaths: 0
   minRepaths: 0

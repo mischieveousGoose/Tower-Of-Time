@@ -14,12 +14,13 @@ public class GameManager : MonoBehaviour
     public Action OnEnemyKilled;
 
     public int bossLevel;
-    SettingsManager settingsManager;
 
     bool completedTutorial = false;
     public RunData runData;
 
     public Character character;
+
+    public Area[] areas;
 
     private void Awake()
     {
@@ -40,22 +41,18 @@ public class GameManager : MonoBehaviour
             runData.levelTimer += Time.deltaTime;
     }
 
-    void Start()
-    {
-        settingsManager = FindFirstObjectByType<SettingsManager>();
-    }
 
     public void ChooseCharacter(Character character)
     {
-	this.character = character;
-	if(completedTutorial)
-	{
-	    Retry();
-	}
-	else
-	{
-	    RetryTutorial();
-	}
+        this.character = character;
+        if (completedTutorial)
+        {
+            Retry();
+        }
+        else
+        {
+            RetryTutorial();
+        }
     }
 
 
@@ -63,8 +60,7 @@ public class GameManager : MonoBehaviour
     {
         OnReset?.Invoke();
         runData = new RunData(StatsManager.Instance.startStats.maxTime, wp);
-        SceneTransitions.Instance.TransitionToScene("SampleScene");
-
+        SceneTransitions.Instance.TransitionToScene(areas[runData.area].levelScene);
     }
 
     public void RetryTutorial()
@@ -73,19 +69,47 @@ public class GameManager : MonoBehaviour
         SceneTransitions.Instance.TransitionToScene("Tutorial");
     }
 
-    public void ContinueFromRoadmap(string sceneName)
+    public void ContinueFromRoadmap(NodeType nodeType)
     {
         Roadmap roadmap = FindFirstObjectByType<Roadmap>();
         runData.rootNode = roadmap.rootNode;
         runData.currentNode = roadmap.currentNode;
         runData.level++;
         runData.levelTimer = 0;
-        SceneTransitions.Instance.TransitionToScene(sceneName);
+
+        switch (nodeType)
+        {
+            case NodeType.Level:
+                SceneTransitions.Instance.TransitionToScene(areas[runData.area].levelScene);
+                break;
+            case NodeType.Shop:
+                SceneTransitions.Instance.TransitionToScene("Shop");
+                break;
+            case NodeType.CombatEncounter:
+                SceneTransitions.Instance.TransitionToScene(areas[runData.area].combatEncounterScene);
+                break;
+            case NodeType.Boss:
+                SceneTransitions.Instance.TransitionToScene(areas[runData.area].bossScene);
+                break;
+        }
+
     }
 
     public void Play()
     {
         SceneTransitions.Instance.TransitionToScene("CharacterSelect");
+    }
+
+    public void CompleteBoss()
+    {
+        runData.area++;
+        runData.level = 1;
+        runData.levelTimer = 0;
+
+        runData.rootNode = null;
+        runData.currentNode = null;
+
+        SceneTransitions.Instance.TransitionToScene(areas[runData.area].levelScene);
     }
 
     public void ContinueFromShop()
@@ -130,4 +154,21 @@ public class GameManager : MonoBehaviour
     }
 
 
+}
+
+[Serializable]
+public struct Area
+{
+    public string name;
+    public string levelScene;
+    public string bossScene;
+    public string combatEncounterScene;
+
+    public Area(string name, string levelScene, string bossScene, string combatEncounterScene)
+    {
+        this.name = name;
+        this.levelScene = levelScene;
+        this.bossScene = bossScene;
+        this.combatEncounterScene = combatEncounterScene;
+    }
 }
