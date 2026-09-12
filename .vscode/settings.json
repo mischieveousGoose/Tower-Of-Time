@@ -72,5 +72,11 @@
     "editor.formatOnSave": true,
     "files.autoSave": "onWindowChange",
     "editor.defaultFormatter": "ms-dotnettools.csharp",
-    "editor.allowVariableFonts": false
+    "editor.allowVariableFonts": false,
+    "editor.inlineSuggest.edits.allowCodeShifting": "never",
+    "editor.inlineSuggest.edits.showLongDistanceHint": false,
+    "github.copilot.nextEditSuggestions.allowWhitespaceOnlyChanges": false,
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "github.copilot.nextEditSuggestions.extendedRange": false,
+    "github.copilot.nextEditSuggestions.fixes": false
 }

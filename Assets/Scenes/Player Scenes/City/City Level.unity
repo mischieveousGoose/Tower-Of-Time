@@ -2142,16 +2142,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a9402c7d987184ca7c92abefc704fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelSpawner
-  startRoom: {fileID: 4027679971836543974, guid: 6585fa21788814542bc1c2905925e8f0, type: 3}
-  endRoom: {fileID: 2427229020385949322, guid: 423a3a40a7cf1954199259557d6b70ad, type: 3}
+  startRoom: {fileID: 2896826886367450118, guid: 9818daf2909c3d6478c781e1754f6915, type: 3}
+  endRoom: {fileID: 508644848523988036, guid: ae934f9f83f3e2c4bade65a886e5431b, type: 3}
   levelLength: 0
   rooms:
-  - {fileID: 96564710730762582, guid: 83be43183a390864ca68eb0a82c4ee6d, type: 3}
-  - {fileID: 3405779618474468278, guid: 6571bd9ab63735b47b190645cc432ca9, type: 3}
-  - {fileID: 2094887674019641021, guid: f9df5cb5ac6ad3d41a4e8c529dfeffc7, type: 3}
-  - {fileID: 3494377751597396623, guid: d73100ccf9a4ee44384e6e14c10226ea, type: 3}
+  - {fileID: 8662597001175922651, guid: 8510b9d264f4a4049ba295646ecc0d41, type: 3}
   startRooms: 5
   increaseAmount: 1
+  spawnAheadDistance: 30
+  roomsAheadBuffer: 2
+  startRoomSpawnPoint: {x: 13.5, y: -1.5, z: 0}
+  endTile: {fileID: 11400000, guid: 60a0746cfbe3f6648ba9356e901bc79d, type: 2}
+  startTile: {fileID: 11400000, guid: 4193d700274bca74eaa7dc4fb6b2b71c, type: 2}
 --- !u!1 &779945619
 GameObject:
   m_ObjectHideFlags: 0

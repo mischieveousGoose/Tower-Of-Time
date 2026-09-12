@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class LevelSpawner : MonoBehaviour
 {
@@ -12,15 +13,21 @@ public class LevelSpawner : MonoBehaviour
     public int increaseAmount;
 
     [Header("Progressive spawning")]
-    public float spawnAheadDistance = 30f; // spawn next room when player is this close to the cursor
-    public int roomsAheadBuffer = 2;       // how many rooms to keep pre-spawned ahead of the player
+    public float spawnAheadDistance = 30f;
+    public int roomsAheadBuffer = 2;
 
     Transform player;
-    Transform nextSpawnPoint;   // where the next room attaches
+    Vector3 nextSpawnPoint;
     int roomsSpawned = 0;
     bool levelComplete = false;
 
-    Queue<GameObject> spawnedRooms = new Queue<GameObject>(); // for optional cleanup
+    public Vector3 startRoomSpawnPoint;
+
+    Queue<GameObject> spawnedRooms = new Queue<GameObject>();
+
+    [Header("Tilemap Stuff")]
+    public TileBase endTile;
+    public TileBase startTile;
 
     void Start()
     {
@@ -29,12 +36,10 @@ public class LevelSpawner : MonoBehaviour
         int level = GameManager.Instance.runData.level;
         levelLength = startRooms + ((level - 1) * increaseAmount);
 
-        // Spawn the start room immediately
-        GameObject start = Instantiate(startRoom, Vector3.zero, Quaternion.identity);
-        nextSpawnPoint = start.transform.GetChild(0);
+        GameObject start = Instantiate(startRoom, startRoomSpawnPoint, Quaternion.identity);
+        nextSpawnPoint = GetTileWorldPosition(start, endTile);
         spawnedRooms.Enqueue(start);
 
-        // Pre-fill a small buffer so the player never sees empty space
         for (int i = 0; i < roomsAheadBuffer; i++)
         {
             SpawnNextRoom();
@@ -43,9 +48,9 @@ public class LevelSpawner : MonoBehaviour
 
     void Update()
     {
-        if (levelComplete || nextSpawnPoint == null) return;
+        if (levelComplete) return;
 
-        float distance = Vector3.Distance(player.position, nextSpawnPoint.position);
+        float distance = Vector3.Distance(player.position, nextSpawnPoint);
         if (distance < spawnAheadDistance)
         {
             SpawnNextRoom();
@@ -58,41 +63,81 @@ public class LevelSpawner : MonoBehaviour
         {
             if (!levelComplete)
             {
-                Instantiate(endRoom, nextSpawnPoint.position, Quaternion.identity);
+                PlaceRoomAt(endRoom, nextSpawnPoint);
                 levelComplete = true;
             }
             return;
         }
 
-        GameObject roomGO = Instantiate(
-            rooms[Random.Range(0, rooms.Count)],
-            nextSpawnPoint.position,
-            Quaternion.identity
-        );
+        GameObject roomPrefab = rooms[Random.Range(0, rooms.Count)];
+        GameObject roomGO = PlaceRoomAt(roomPrefab, nextSpawnPoint);
 
-        nextSpawnPoint = roomGO.transform.GetChild(0);
+        nextSpawnPoint = GetTileWorldPosition(roomGO, endTile);
+        DeleteStartAndEndTiles(roomGO);
         spawnedRooms.Enqueue(roomGO);
         roomsSpawned++;
 
-        // Optional: despawn rooms far behind the player to save memory
         TryCleanupOldRooms();
+    }
+
+    // Instantiates a room, then shifts it so its startTile lands exactly on targetPos.
+    GameObject PlaceRoomAt(GameObject roomPrefab, Vector3 targetPos)
+    {
+        GameObject roomGO = Instantiate(roomPrefab, Vector3.zero, Quaternion.identity, transform);
+
+        Vector3 startTileWorldPos = GetTileWorldPosition(roomGO, startTile);
+        Vector3 correction = targetPos - startTileWorldPos;
+        roomGO.transform.position += correction;
+
+        return roomGO;
     }
 
     void TryCleanupOldRooms()
     {
-        // Keep only a handful of rooms behind the player alive
         while (spawnedRooms.Count > roomsAheadBuffer + 3)
         {
-            GameObject old = spawnedRooms.Dequeue();
+            GameObject old = spawnedRooms.Peek(); // peek first, don't lose it if we're not destroying yet
             if (Vector3.Distance(player.position, old.transform.position) > spawnAheadDistance * 3f)
             {
+                spawnedRooms.Dequeue();
                 Destroy(old);
             }
             else
             {
-                // not far enough yet, put it back and stop
-                // (simple approach — a List with manual indexing gives more control if you need it)
                 break;
+            }
+        }
+    }
+
+    public Tilemap GetGroundTilemap(GameObject room)
+    {
+        return room.transform.Find("Grid").Find("Ground").GetComponent<Tilemap>();
+    }
+
+    public Vector3 GetTileWorldPosition(GameObject room, TileBase tile)
+    {
+        Tilemap ground = GetGroundTilemap(room);
+
+        foreach (var pos in ground.cellBounds.allPositionsWithin)
+        {
+            if (ground.GetTile(pos) == tile)
+            {
+                return ground.CellToWorld(pos) + ground.tileAnchor;
+            }
+        }
+        Debug.LogWarning("Tile not found in room: " + tile.name + " (" + room.name + ")");
+        return room.transform.position;
+    }
+
+    void DeleteStartAndEndTiles(GameObject room)
+    {
+        Tilemap ground = GetGroundTilemap(room);
+
+        foreach (var pos in ground.cellBounds.allPositionsWithin)
+        {
+            if (ground.GetTile(pos) == startTile || ground.GetTile(pos) == endTile)
+            {
+                ground.SetTile(pos, null);
             }
         }
     }
