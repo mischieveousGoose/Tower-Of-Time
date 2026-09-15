@@ -255,4 +255,10 @@ public class PlayerMovement : MonoBehaviour
     {
         return Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, movingPlatform);
     }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(groundCheck.position, groundCheckSize);
+    }
 }
