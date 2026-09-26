@@ -2085,8 +2085,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 774372243}
-  - component: {fileID: 774372244}
   - component: {fileID: 774372245}
+  - component: {fileID: 774372246}
   m_Layer: 0
   m_Name: LevelSpawner
   m_TagString: Untagged
@@ -2109,61 +2109,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &774372244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774372242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97a9402c7d987184ca7c92abefc704fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelSpawner
-  startRoom: {fileID: 2896826886367450118, guid: 9818daf2909c3d6478c781e1754f6915, type: 3}
-  endRooms:
-  - {fileID: 508644848523988036, guid: ae934f9f83f3e2c4bade65a886e5431b, type: 3}
-  - {fileID: 2217828784735929951, guid: 0915c4784cf77e848871478dd7147623, type: 3}
-  - {fileID: 8776255663353998296, guid: 37e6b9ff62572a44b908862c2d1c4d29, type: 3}
-  - {fileID: 4928546307028515595, guid: eeaf8fd385d212d4692286d13cb8bed1, type: 3}
-  levelLength: 0
-  rooms:
-  - {fileID: 8662597001175922651, guid: 8510b9d264f4a4049ba295646ecc0d41, type: 3}
-  - {fileID: 6264021719729638638, guid: cbc4d8b262cee1846baa25d81e00abbf, type: 3}
-  - {fileID: 8350013219381262576, guid: 24bd7c791c6eaa6428eee77a2383e097, type: 3}
-  - {fileID: 7790529100996886651, guid: b61f3ae1216e8b74b993d7c868c7b7d0, type: 3}
-  - {fileID: 8726504181399660863, guid: 307b4c2a0de45e04f864769fa1a006fa, type: 3}
-  - {fileID: 1360609146778549261, guid: a9283c1ce0fed9346bfcf4efed8c4e11, type: 3}
-  - {fileID: 7566957356276525575, guid: 461f1b7519f486744be10261862961ef, type: 3}
-  - {fileID: 561195869389921044, guid: 33bb297f838beb24bb11fc4a54c48da9, type: 3}
-  rightRooms:
-  - {fileID: 8662597001175922651, guid: 8510b9d264f4a4049ba295646ecc0d41, type: 3}
-  - {fileID: 6264021719729638638, guid: cbc4d8b262cee1846baa25d81e00abbf, type: 3}
-  - {fileID: 7566957356276525575, guid: 461f1b7519f486744be10261862961ef, type: 3}
-  upRooms:
-  - {fileID: 6264021719729638638, guid: cbc4d8b262cee1846baa25d81e00abbf, type: 3}
-  - {fileID: 8350013219381262576, guid: 24bd7c791c6eaa6428eee77a2383e097, type: 3}
-  - {fileID: 1360609146778549261, guid: a9283c1ce0fed9346bfcf4efed8c4e11, type: 3}
-  - {fileID: 7566957356276525575, guid: 461f1b7519f486744be10261862961ef, type: 3}
-  downRooms:
-  - {fileID: 8350013219381262576, guid: 24bd7c791c6eaa6428eee77a2383e097, type: 3}
-  - {fileID: 561195869389921044, guid: 33bb297f838beb24bb11fc4a54c48da9, type: 3}
-  leftRooms:
-  - {fileID: 8350013219381262576, guid: 24bd7c791c6eaa6428eee77a2383e097, type: 3}
-  - {fileID: 7790529100996886651, guid: b61f3ae1216e8b74b993d7c868c7b7d0, type: 3}
-  - {fileID: 8726504181399660863, guid: 307b4c2a0de45e04f864769fa1a006fa, type: 3}
-  - {fileID: 1360609146778549261, guid: a9283c1ce0fed9346bfcf4efed8c4e11, type: 3}
-  - {fileID: 561195869389921044, guid: 33bb297f838beb24bb11fc4a54c48da9, type: 3}
-  startRooms: 5
-  increaseAmount: 1
-  spawnAheadDistance: 30
-  roomsAheadBuffer: 2
-  overlapShrink: 2
-  maxPlacementAttempts: 8
-  startRoomSpawnPoint: {x: 13.5, y: -1.5, z: 0}
-  endTile: {fileID: 11400000, guid: 60a0746cfbe3f6648ba9356e901bc79d, type: 2}
-  startTile: {fileID: 11400000, guid: 4193d700274bca74eaa7dc4fb6b2b71c, type: 2}
 --- !u!114 &774372245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2181,6 +2126,31 @@ MonoBehaviour:
   - {fileID: 3812435866193472453, guid: 26bce3bdeb10bfb44a6b12c2da12bcb6, type: 3}
   - {fileID: 3841518330054360936, guid: 2cda11fa48f5fda4ab60335963a80377, type: 3}
   - {fileID: 4406716684219708842, guid: b24b0a24b7807b6458a501fd0706ac5b, type: 3}
+--- !u!114 &774372246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774372242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83594afd64bd73a45855b0f336c69761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelSpawnerNew
+  startRoom: {fileID: 2896826886367450118, guid: 9818daf2909c3d6478c781e1754f6915, type: 3}
+  endRooms: {fileID: 508644848523988036, guid: ae934f9f83f3e2c4bade65a886e5431b, type: 3}
+  levelLength: 0
+  rooms:
+  - {fileID: 7790529100996886651, guid: b61f3ae1216e8b74b993d7c868c7b7d0, type: 3}
+  - {fileID: 8662597001175922651, guid: 8510b9d264f4a4049ba295646ecc0d41, type: 3}
+  startRooms: 6
+  increaseAmount: 2
+  spawnAheadDistance: 30
+  roomsAheadBuffer: 2
+  startRoomSpawnPoint: {x: 11, y: -2, z: 0}
+  endTile: {fileID: 11400000, guid: 60a0746cfbe3f6648ba9356e901bc79d, type: 2}
+  startTile: {fileID: 11400000, guid: 4193d700274bca74eaa7dc4fb6b2b71c, type: 2}
 --- !u!1 &779945619
 GameObject:
   m_ObjectHideFlags: 0

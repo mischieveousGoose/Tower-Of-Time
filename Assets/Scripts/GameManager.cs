@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviour
     public event Action OnReset;
     public Action OnEnemyKilled;
 
-    public int bossLevel;
-
     bool completedTutorial = false;
     public RunData runData;
 

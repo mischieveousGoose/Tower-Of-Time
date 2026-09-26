@@ -150,14 +150,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Roadmap
   maxConnectionGap: 1
   width: 3
-  height: 15
+  height: 2
   nodeObject: {fileID: 1662055911479927592, guid: 3a4e82bfffd388142b3d99c56f0a1959, type: 3}
   nodeParent: {fileID: 1442699715}
-  sceneNames:
-  - SampleScene
-  - Shop
-  - Combat
-  - Boss Fight
   nodeTypeChances:
   - 50
   - 30

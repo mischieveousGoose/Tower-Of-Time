@@ -20,7 +20,7 @@ MonoBehaviour:
     damage: 1
     speed: 12
     shopPrices: 0.7
-    enemyTimeReward: 0.9
+    enemyTimeReward: 1.4
     comboSustainTime: 2
     comboMultIncrease: 0.1
   primaryWeapon: {fileID: 8175336237109619763, guid: 66e393a4ba543d849b352cc27269f816, type: 3}

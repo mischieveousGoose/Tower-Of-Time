@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Player Scenes/City/City Level.unity
     guid: 60a07085cea495042994432e0a874aee
+  - enabled: 1
+    path: Assets/Scenes/Player Scenes/City/City Boss.unity
+    guid: fb0d7445f576c854a9c6220f66736457
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
