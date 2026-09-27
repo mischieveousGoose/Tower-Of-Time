@@ -390,8 +390,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Back
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 64258389de8d0f44db9b3262cff31c85, type: 2}
-  m_sharedMaterial: {fileID: -4303007938384870450, guid: 64258389de8d0f44db9b3262cff31c85, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351a8d15e148c5140abe3d8c9b0ec8b1, type: 2}
+  m_sharedMaterial: {fileID: 2703858975420633263, guid: 351a8d15e148c5140abe3d8c9b0ec8b1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -415,7 +415,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 123.56
+  m_fontSize: 63.5
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -855,8 +855,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Continue
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 64258389de8d0f44db9b3262cff31c85, type: 2}
-  m_sharedMaterial: {fileID: -4303007938384870450, guid: 64258389de8d0f44db9b3262cff31c85, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351a8d15e148c5140abe3d8c9b0ec8b1, type: 2}
+  m_sharedMaterial: {fileID: 2703858975420633263, guid: 351a8d15e148c5140abe3d8c9b0ec8b1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -880,7 +880,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90.3
+  m_fontSize: 54.2
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1075,8 +1075,8 @@ MonoBehaviour:
 
     - Long Bottom'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 64258389de8d0f44db9b3262cff31c85, type: 2}
-  m_sharedMaterial: {fileID: -4303007938384870450, guid: 64258389de8d0f44db9b3262cff31c85, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351a8d15e148c5140abe3d8c9b0ec8b1, type: 2}
+  m_sharedMaterial: {fileID: 2703858975420633263, guid: 351a8d15e148c5140abe3d8c9b0ec8b1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1100,7 +1100,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 132.03
+  m_fontSize: 94.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1448,8 +1448,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -494, y: 437.5}
-  m_SizeDelta: {x: 493.431, y: 103.007}
+  m_AnchoredPosition: {x: -494, y: 445.67}
+  m_SizeDelta: {x: 493.431, y: 86.671}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2012462009
 MonoBehaviour:
@@ -1473,8 +1473,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Jimmy Longbottom
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 64258389de8d0f44db9b3262cff31c85, type: 2}
-  m_sharedMaterial: {fileID: -4303007938384870450, guid: 64258389de8d0f44db9b3262cff31c85, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351a8d15e148c5140abe3d8c9b0ec8b1, type: 2}
+  m_sharedMaterial: {fileID: 2703858975420633263, guid: 351a8d15e148c5140abe3d8c9b0ec8b1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1498,7 +1498,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 87.1
+  m_fontSize: 48.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
