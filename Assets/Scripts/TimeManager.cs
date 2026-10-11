@@ -21,8 +21,6 @@ public class TimeManager : MonoBehaviour
     Player player;
 
     bool hasWon;
-    DialogueManager dialogueManager;
-
     SFXManager sfxManager;
 
     public void BeatLevel()
@@ -37,14 +35,13 @@ public class TimeManager : MonoBehaviour
         sfxManager = FindFirstObjectByType<SFXManager>();
         StartCoroutine(Countdown());
         player = FindFirstObjectByType<Player>();
-        dialogueManager = FindFirstObjectByType<DialogueManager>();
     }
 
     void Update()
     {
 
         bool inDialogue = false;
-        if (dialogueManager != null) inDialogue = dialogueManager.startedDialogue;
+        inDialogue = DialogueManager.Instance.inDialogue;
 
         if (Input.GetKeyDown(KeyCode.Q) && !hasLost && !inCountdown && !hasWon && !inDialogue && !beatLevel)
         {

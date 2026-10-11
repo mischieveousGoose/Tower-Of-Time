@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ public class ShopManager : MonoBehaviour
 
     float shopTimer;
     List<Item> inventory => InventoryManager.Instance.inventory;
+    InventoryManager invManager => InventoryManager.Instance;
 
     [HideInInspector] public GameObject primaryWeapon;
     [HideInInspector] public GameObject secondaryWeapon;
@@ -125,7 +127,7 @@ public class ShopManager : MonoBehaviour
         sfxManager.PlaySFX(2);
         Destroy(inventoryParent.GetChild(i).gameObject);
         time += inventory[i].cost / 2;
-        inventory.RemoveAt(i);
+        invManager.RemoveItemAt(i);
         RenderShop();
 
     }
@@ -189,24 +191,14 @@ public class ShopManager : MonoBehaviour
         sfxManager.PlaySFX(2);
         time -= GetItemCost(buyItem);
 
-
-
-        if (buyItem is IOnBuy onBuy)
-        {
-            onBuy.OnBuy(this);
-        }
-
-
+        invManager.AddItem(buyItem);
 
         if (!(buyItem is WeaponItem))
         {
             Instantiate(inventoryPrefab, inventoryParent).GetComponent<Image>().sprite = buyItem.icon;
-            inventory.Add(buyItem);
         }
-        StatsManager.Instance.CalculateStats();
 
         stock[i] = null;
-
         RenderShop();
     }
 

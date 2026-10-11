@@ -3,45 +3,59 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.Events;
 
 public class DialogueManager : MonoBehaviour
 {
-    public List<Dialogue> conversation;
+    private Dialogue conversation;
 
-    public Image face;
-    public TMP_Text nameText;
-    public TMP_Text dialogueText;
+    [SerializeField] private Image face;
+    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text dialogueText;
 
-    public float dialogueSpeed;
-
-    public int thisDialogue;
+    [SerializeField] private float dialogueSpeed;
 
     int cIndex = -1;
-    public bool startedDialogue;
+    [HideInInspector] public bool inDialogue;
     SFXManager sfxManager;
 
     public GameObject dialogueBox;
+    [HideInInspector] public UnityEvent OnEndDialogue;
+
+
+    public static DialogueManager Instance;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+    }
 
     void Start()
     {
         sfxManager = FindFirstObjectByType<SFXManager>();
-        if (thisDialogue == 0) StartDialogue();
-
-
     }
 
-    public void StartDialogue()
+    public void StartDialogue(Dialogue conversation)
     {
-        if (startedDialogue) return;
-        startedDialogue = true;
+        if (inDialogue) return;
+        this.conversation = conversation;
+        cIndex = -1;
+        inDialogue = true;
         StartCoroutine(ContinueConversation());
     }
 
-
     void Update()
     {
-        dialogueBox.SetActive(startedDialogue);
-        if (Input.GetKeyDown(KeyCode.Space) && startedDialogue)
+        dialogueBox.SetActive(inDialogue);
+        if (InputManager.Instance.InteractPerformed && inDialogue)
         {
             StartCoroutine(ContinueConversation());
         }
@@ -51,18 +65,18 @@ public class DialogueManager : MonoBehaviour
     {
         cIndex++;
 
-        if (cIndex >= conversation.Count)
+        if (cIndex >= conversation.lines.Count)
         {
             EndConversation();
 
         }
         else
         {
-            Dialogue dialogue = conversation[cIndex];
-            nameText.text = dialogue.cName;
-            face.sprite = dialogue.face;
+            DialogueLine line = conversation.lines[cIndex];
+            nameText.text = line.cName;
+            face.sprite = line.face;
             dialogueText.maxVisibleCharacters = 0;
-            dialogueText.text = dialogue.text;
+            dialogueText.text = line.text;
 
             while (dialogueText.maxVisibleCharacters < dialogueText.text.Length)
             {
@@ -76,9 +90,8 @@ public class DialogueManager : MonoBehaviour
 
     void EndConversation()
     {
-        startedDialogue = false;
-        if (thisDialogue == 0)
-            GameManager.Instance.RetryTutorial();
-
+        inDialogue = false;
+        OnEndDialogue?.Invoke();
+        OnEndDialogue.RemoveAllListeners();
     }
 }

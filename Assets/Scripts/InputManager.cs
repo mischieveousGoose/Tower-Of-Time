@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     private InputAction jumpAction;
     private InputAction primaryWeaponAction;
     private InputAction secondaryWeaponAction;
+    private InputAction InteractAction;
 
     public float HorizontalInput { get; private set; }
     public float VerticalInput { get; private set; }
@@ -23,6 +24,8 @@ public class InputManager : MonoBehaviour
     public bool PrimaryWeaponReleased { get; private set; }
     public bool SecondaryWeaponReleased { get; private set; }
 
+    public bool InteractPerformed { get; private set; }
+
     void OnEnable()
     {
         if (Instance != null && Instance != this)
@@ -35,6 +38,7 @@ public class InputManager : MonoBehaviour
         jumpAction = inputActions.FindAction("Jump");
         primaryWeaponAction = inputActions.FindAction("Primary Weapon");
         secondaryWeaponAction = inputActions.FindAction("Secondary Weapon");
+        InteractAction = inputActions.FindAction("Interact");
     }
 
     void OnDisable()
@@ -66,12 +70,14 @@ public class InputManager : MonoBehaviour
         VerticalInput = MoveVector.y;
 
         JumpInput = jumpAction.WasPerformedThisFrame();
-	JumpInputReleased = jumpAction.WasReleasedThisFrame();
+        JumpInputReleased = jumpAction.WasReleasedThisFrame();
 
         PrimaryWeaponPerformed = primaryWeaponAction.WasPerformedThisFrame();
         SecondaryWeaponPerformed = secondaryWeaponAction.WasPerformedThisFrame();
 
         PrimaryWeaponReleased = primaryWeaponAction.WasReleasedThisFrame();
         SecondaryWeaponReleased = secondaryWeaponAction.WasReleasedThisFrame();
+
+        InteractPerformed = InteractAction.WasPerformedThisFrame();
     }
 }

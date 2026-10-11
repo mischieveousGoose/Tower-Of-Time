@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Items/RankRewarder")]
+[CreateAssetMenu(menuName = "Custom/Items/RankRewarder")]
 public class RankRewarder : Item, IOnRoundEnd
 {
     public Rank targetRank;

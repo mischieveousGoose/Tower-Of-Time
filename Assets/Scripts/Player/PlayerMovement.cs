@@ -243,12 +243,6 @@ public class PlayerMovement : MonoBehaviour
         {
             FindFirstObjectByType<RankManager>().Continue();
         }
-
-        if (collision.gameObject.CompareTag("Fight"))
-        {
-            FindFirstObjectByType<DialogueManager>().StartDialogue();
-            Destroy(collision.gameObject);
-        }
     }
 
     Collider2D IsOnMovingPlatform()

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Items/Credit Card")]
+[CreateAssetMenu(menuName = "Custom/Items/Credit Card")]
 public class CreditCard : Item, IOnBuy, IOnRoundEnd
 {
     public float initialReward;

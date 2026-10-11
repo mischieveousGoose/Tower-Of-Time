@@ -1,17 +1,30 @@
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class StatsManager : MonoBehaviour
 {
-
     public static StatsManager Instance;
 
     public Stats startStats;
     public Stats curStats;
 
-    Dictionary<StatType, StatMultiplier> statMultipliers;
+    // The base values before item bonuses.
+    private Stats baseStats;
+
+    // Active item modifiers, identified by a unique ID.
+    private readonly Dictionary<int, List<ActiveStatModifier>>
+        activeModifiers = new();
+
+    private int nextModifierId = 0;
+
+    private class ActiveStatModifier
+    {
+        public StatType stat;
+        public StatModificationType type;
+        public float value;
+    }
 
     private void Awake()
     {
@@ -23,84 +36,93 @@ public class StatsManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
 
-    void Start()
-    {
-        curStats = startStats;
-    }
-
-    void ResetMultipliers()
-    {
-        if (statMultipliers == null)
-            statMultipliers = new Dictionary<StatType, StatMultiplier>();
-
-        foreach (StatType stat in Enum.GetValues(typeof(StatType)))
-        {
-            statMultipliers[stat] = new StatMultiplier(GetStat(stat), 1f);
-        }
+        ResetStats();
     }
 
     public void ResetStats()
     {
-	if(GameManager.Instance.character != null) 
-	    curStats = GameManager.Instance.character.stats;
-	else
-        curStats = startStats;
-        ResetMultipliers();
+        if (GameManager.Instance.character != null)
+            baseStats = GameManager.Instance.character.stats;
+        else
+            baseStats = startStats;
+
+        curStats = CopyStats(baseStats);
+        activeModifiers.Clear();
     }
 
-    public void SetStats(Stats stats)
+    private Stats CopyStats(Stats source)
     {
-	this.startStats = stats;
+        // IMPORTANT:
+        // This assumes Stats is a class with the listed fields.
+        // Copy every field in your actual Stats definition here.
+        return new Stats
+        {
+            damage = source.damage,
+            comboMultIncrease = source.comboMultIncrease,
+            speed = source.speed,
+            comboSustainTime = source.comboSustainTime,
+            enemyTimeReward = source.enemyTimeReward,
+            shopPrices = source.shopPrices,
+            maxTime = source.maxTime
+        };
+    }
+
+    public int AddModifiers(List<StatModification> modifications)
+    {
+        int id = ++nextModifierId;
+        var modifiers = new List<ActiveStatModifier>();
+
+        foreach (var mod in modifications)
+        {
+            modifiers.Add(new ActiveStatModifier
+            {
+                stat = mod.stat,
+                type = mod.modType,
+                value = mod.mod
+            });
+        }
+
+        activeModifiers.Add(id, modifiers);
+        RecalculateStats();
+
+        return id;
+    }
+
+    public void RemoveModifiers(int id)
+    {
+        if (activeModifiers.Remove(id))
+            RecalculateStats();
     }
 
     public float GetStat(StatType type)
     {
-        switch (type)
+        return type switch
         {
-            case StatType.Damage:
-                return curStats.damage;
-
-            case StatType.ComboMultIncrease:
-                return curStats.comboMultIncrease;
-
-            case StatType.Speed:
-                return curStats.speed;
-
-            case StatType.ComboSustainTime:
-                return curStats.comboSustainTime;
-
-            case StatType.EnemyTimeReward:
-                return curStats.enemyTimeReward;
-
-            case StatType.ShopPrices:
-                return curStats.shopPrices;
-
-            case StatType.MaxTime:
-                return curStats.maxTime;
-
-            default:
-                return -1;
-        }
+            StatType.Damage => curStats.damage,
+            StatType.ComboMultIncrease => curStats.comboMultIncrease,
+            StatType.Speed => curStats.speed,
+            StatType.ComboSustainTime => curStats.comboSustainTime,
+            StatType.EnemyTimeReward => curStats.enemyTimeReward,
+            StatType.ShopPrices => curStats.shopPrices,
+            StatType.MaxTime => curStats.maxTime,
+            _ => -1f
+        };
     }
 
-    public void SetStat(StatType type, float value)
+    private void SetStat(StatType type, float value)
     {
         switch (type)
         {
             case StatType.Damage:
                 curStats.damage = value;
                 break;
-
             case StatType.ComboMultIncrease:
                 curStats.comboMultIncrease = value;
                 break;
-
             case StatType.Speed:
                 curStats.speed = value;
                 break;
-
             case StatType.ComboSustainTime:
                 curStats.comboSustainTime = value;
                 break;
@@ -110,65 +132,57 @@ public class StatsManager : MonoBehaviour
             case StatType.ShopPrices:
                 curStats.shopPrices = value;
                 break;
-
             case StatType.MaxTime:
                 curStats.maxTime = value;
                 break;
-
-
         }
     }
 
-    public void CalculateStats()
+    private void RecalculateStats()
     {
-        ResetStats();
-        Debug.Log("Recalculating Stats");
-
-        List<IOnSetStats> items = InventoryManager.Instance.GetInterfaceList<IOnSetStats>();
-        foreach (IOnSetStats item in items)
-        {
-            item.OnSetStats(statMultipliers);
-        }
+        curStats = CopyStats(baseStats);
 
         foreach (StatType stat in Enum.GetValues(typeof(StatType)))
         {
-            if (statMultipliers.TryGetValue(stat, out StatMultiplier multiplier))
+            float flatBonus = 0f;
+            float multiplier = 1f;
+
+            foreach (var entry in activeModifiers.Values)
             {
-                SetStat(stat, multiplier.value * multiplier.mult);
+                foreach (var mod in entry)
+                {
+                    if (mod.stat != stat)
+                        continue;
+
+                    switch (mod.type)
+                    {
+                        case StatModificationType.Add:
+                            flatBonus += mod.value;
+                            break;
+
+                        case StatModificationType.Mult:
+                            multiplier *= mod.value;
+                            break;
+                    }
+                }
             }
+
+            SetStat(stat, (GetStatFromBase(stat) + flatBonus) * multiplier);
         }
-
     }
 
-    void OnEnable()
+    private float GetStatFromBase(StatType type)
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        GameManager.Instance.OnReset += ResetStats;
-    }
-
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        GameManager.Instance.OnReset -= ResetStats;
-    }
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name != "Menu" && scene.name != "Cutscene")
+        return type switch
         {
-            CalculateStats();
-        }
-    }
-}
-
-public struct StatMultiplier
-{
-    public float value;
-    public float mult;
-
-    public StatMultiplier(float value, float mult)
-    {
-        this.value = value;
-        this.mult = mult;
+            StatType.Damage => baseStats.damage,
+            StatType.ComboMultIncrease => baseStats.comboMultIncrease,
+            StatType.Speed => baseStats.speed,
+            StatType.ComboSustainTime => baseStats.comboSustainTime,
+            StatType.EnemyTimeReward => baseStats.enemyTimeReward,
+            StatType.ShopPrices => baseStats.shopPrices,
+            StatType.MaxTime => baseStats.maxTime,
+            _ => 0f
+        };
     }
 }

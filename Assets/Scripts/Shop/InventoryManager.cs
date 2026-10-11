@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -44,5 +45,28 @@ public class InventoryManager : MonoBehaviour
         }
 
         return output;
+    }
+
+    public void AddItem(Item item)
+    {
+        if (item is IOnBuy onBuy)
+        {
+            onBuy.OnBuy(FindFirstObjectByType<ShopManager>());
+        }
+
+        if (!(item is WeaponItem))
+        {
+            inventory.Add(item);
+        }
+    }
+
+    public void RemoveItemAt(int index)
+    {
+        if (inventory[index] is IOnRemove onRemove)
+        {
+            onRemove.OnRemove();
+        }
+
+        inventory.RemoveAt(index);
     }
 }
