@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     public void Retry()
     {
+        StatsManager.Instance.ResetStats();
         OnReset?.Invoke();
         runData = new RunData(StatsManager.Instance.startStats.maxTime, wp);
         SceneTransitions.Instance.TransitionToScene(areas[runData.area].levelScene);
@@ -63,6 +64,8 @@ public class GameManager : MonoBehaviour
 
     public void RetryTutorial()
     {
+        StatsManager.Instance.ResetStats();
+        OnReset?.Invoke();
         runData = new RunData(StatsManager.Instance.startStats.maxTime, wp);
         SceneTransitions.Instance.TransitionToScene("Tutorial");
     }
@@ -88,6 +91,9 @@ public class GameManager : MonoBehaviour
                 break;
             case NodeType.Boss:
                 SceneTransitions.Instance.TransitionToScene(areas[runData.area].bossScene);
+                break;
+            case NodeType.NPCEncounter:
+                SceneTransitions.Instance.TransitionToScene("NPCEncounter");
                 break;
         }
 

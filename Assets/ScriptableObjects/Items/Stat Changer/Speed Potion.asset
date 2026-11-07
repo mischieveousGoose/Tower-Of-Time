@@ -21,5 +21,5 @@ MonoBehaviour:
   description: +10% Speed
   statModifications:
   - stat: 1
-    mod: 0.1
+    mod: 1.1
     modType: 1

@@ -76,7 +76,8 @@ public class RankManager : MonoBehaviour
         {
             EncounterType.KillAll => killAllThresholds,
             EncounterType.Elite => eliteThresholds,
-            EncounterType.Survive => survivalThresholds
+            EncounterType.Survive => survivalThresholds,
+            _ => throw new System.Exception("Invalid encounter type for rank calculation")
         };
 
         // Check if its something where you want to have a low score like time

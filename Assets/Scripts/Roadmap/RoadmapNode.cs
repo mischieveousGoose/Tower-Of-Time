@@ -44,5 +44,6 @@ public enum NodeType
     Level,
     Shop,
     CombatEncounter,
+    NPCEncounter,
     Boss,
 }

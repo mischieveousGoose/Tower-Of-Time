@@ -2139,8 +2139,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelSpawnerNew
   startRoom: {fileID: 2896826886367450118, guid: 9818daf2909c3d6478c781e1754f6915, type: 3}
-  endRooms: {fileID: 508644848523988036, guid: ae934f9f83f3e2c4bade65a886e5431b, type: 3}
+  endRoom: {fileID: 508644848523988036, guid: ae934f9f83f3e2c4bade65a886e5431b, type: 3}
   levelLength: 0
+  infiniteLevel: 0
   rooms:
   - {fileID: 7790529100996886651, guid: b61f3ae1216e8b74b993d7c868c7b7d0, type: 3}
   - {fileID: 8662597001175922651, guid: 8510b9d264f4a4049ba295646ecc0d41, type: 3}

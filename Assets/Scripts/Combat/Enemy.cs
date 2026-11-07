@@ -70,7 +70,7 @@ public class Enemy : MonoBehaviour, Attackable
             if (deathParticles != null)
             {
                 float angle = FindFirstObjectByType<PlayerCombat>().GetMouseAngle();
-                Instantiate(deathParticles, transform.position, Quaternion.Euler(0, 0, angle));
+                Instantiate(deathParticles, transform.position, Quaternion.Euler(0, 0, angle), transform);
             }
 
             Destroy(gameObject);

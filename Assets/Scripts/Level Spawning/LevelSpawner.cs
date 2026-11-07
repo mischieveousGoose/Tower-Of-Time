@@ -1,13 +1,19 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 
 public class LevelSpawner : MonoBehaviour
 {
+    public Action<GameObject> OnRoomSpawned;
+
     EnemySpawner enemySpawner;
     public GameObject startRoom;
-    public GameObject endRooms;
+    public GameObject endRoom;
     [HideInInspector] public int levelLength;
+
+    public bool infiniteLevel = false;
 
 
     public List<GameObject> rooms;
@@ -74,11 +80,11 @@ public class LevelSpawner : MonoBehaviour
         if (isSpawning) return;
         isSpawning = true;
 
-        if (roomsSpawned >= levelLength)
+        if (roomsSpawned >= levelLength && !infiniteLevel)
         {
             if (!levelComplete)
             {
-                GameObject endRoomGO = PlaceRoomAt(endRooms, nextSpawnPoint);
+                GameObject endRoomGO = PlaceRoomAt(endRoom, nextSpawnPoint);
                 DeleteStartAndEndTiles(endRoomGO);
                 HideLogicTilemap(endRoomGO);
                 levelComplete = true;
@@ -87,7 +93,7 @@ public class LevelSpawner : MonoBehaviour
             return;
         }
 
-        GameObject prefab = rooms[Random.Range(0, rooms.Count)];
+        GameObject prefab = rooms[UnityEngine.Random.Range(0, rooms.Count)];
         GameObject roomGO = PlaceRoomAt(prefab, nextSpawnPoint);
 
         nextSpawnPoint = GetTileWorldPosition(roomGO, endTile);
@@ -110,6 +116,7 @@ public class LevelSpawner : MonoBehaviour
         Vector3 startTileWorldPos = CellToWorldPosition(roomGO, startCell);
         Vector3 correction = targetPos - startTileWorldPos;
         roomGO.transform.position += correction + Vector3.right;
+        OnRoomSpawned?.Invoke(roomGO);
 
 
 
